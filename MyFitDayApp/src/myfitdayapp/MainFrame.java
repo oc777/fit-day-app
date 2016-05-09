@@ -1,16 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package myfitdayapp;
 
-import java.sql.SQLException;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Vector;
+
 
 
 /**
@@ -20,34 +18,32 @@ import java.util.Vector;
 public class MainFrame extends javax.swing.JFrame {
 
     private DBHandler dbh;
-    //private Vector<Vector<String>> food;
-    private Vector<String> header;
     private String food;
+    private String sport;
+    private int goal;
+    private PieChart pChart;
+    private String[] macros;
+    private String today;
     
-    /**
-     * Creates new form MainFrame
-     */
+    
     public MainFrame() {
-        initComponents();
-        //tableFood.getColumnModel().getColumn(1).setPreferredWidth(100);
-        //tableSport.getColumnModel().getColumn(1).setPreferredWidth(100);
-        resDate.setText(getDate());
-        
-        
         dbh = new DBHandler();
-        header = new Vector<String>();
-        header.add("name");
-        header.add("n");
+        today = getDate();
+        macros = dbh.getMacros(today);
         
-        try {
-            food = dbh.getTodayFood(getDate());
-            textFood.setText(food);
-        } catch (SQLException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();
         
+        addChart();
+        setDate();
+        updatePanels();
+        setGoal();
+        setTakenCalories(today);
+        setSpentCalories(today);
+        setTotalCalories();
+        setMarginCalories();
+        setMacros();
         
-        
+        //dbh.printAllTotals();
     }
 
     /**
@@ -60,9 +56,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         lPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        chart = new javax.swing.JPanel();
         txtGoal = new javax.swing.JLabel();
-        txtToGo = new javax.swing.JLabel();
+        txtMargin = new javax.swing.JLabel();
         txtTotal = new javax.swing.JLabel();
         txtConsumed = new javax.swing.JLabel();
         txtSpent = new javax.swing.JLabel();
@@ -70,39 +66,59 @@ public class MainFrame extends javax.swing.JFrame {
         resTotal = new javax.swing.JLabel();
         resConsumed = new javax.swing.JLabel();
         resSpent = new javax.swing.JLabel();
-        resToGo = new javax.swing.JLabel();
+        resMargin = new javax.swing.JLabel();
+        btnSetGoal = new javax.swing.JButton();
+        fatColor = new javax.swing.JPanel();
+        carbsColor = new javax.swing.JPanel();
+        proteinColor = new javax.swing.JPanel();
+        fatTxt = new javax.swing.JLabel();
+        carbsTxt = new javax.swing.JLabel();
+        proteinTxt = new javax.swing.JLabel();
+        fatN = new javax.swing.JLabel();
+        proteinN = new javax.swing.JLabel();
+        carbsN = new javax.swing.JLabel();
+        fatG = new javax.swing.JLabel();
+        carbsG = new javax.swing.JLabel();
+        proteinG = new javax.swing.JLabel();
+        rPanel1 = new javax.swing.JPanel();
         txtDate = new javax.swing.JLabel();
-        resDate = new javax.swing.JLabel();
         lableFood = new javax.swing.JLabel();
-        lableSport = new javax.swing.JLabel();
+        resDate = new javax.swing.JLabel();
         addFood = new javax.swing.JButton();
+        lableSport = new javax.swing.JLabel();
         addSport = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        textSport = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         textFood = new javax.swing.JTextArea();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(230, 230, 230));
 
-        lPanel.setBackground(new java.awt.Color(102, 102, 102));
+        lPanel.setBackground(java.awt.Color.darkGray);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 193, Short.MAX_VALUE)
+        chart.setBackground(new java.awt.Color(153, 153, 153));
+        chart.setPreferredSize(new java.awt.Dimension(195, 195));
+
+        javax.swing.GroupLayout chartLayout = new javax.swing.GroupLayout(chart);
+        chart.setLayout(chartLayout);
+        chartLayout.setHorizontalGroup(
+            chartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 195, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 161, Short.MAX_VALUE)
+        chartLayout.setVerticalGroup(
+            chartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 190, Short.MAX_VALUE)
         );
 
         txtGoal.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtGoal.setForeground(new java.awt.Color(255, 255, 255));
         txtGoal.setText("Goal:");
 
-        txtToGo.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        txtToGo.setForeground(new java.awt.Color(255, 255, 255));
-        txtToGo.setText("To go:");
+        txtMargin.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        txtMargin.setForeground(new java.awt.Color(255, 255, 255));
+        txtMargin.setText("To go:");
 
         txtTotal.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtTotal.setForeground(new java.awt.Color(255, 255, 255));
@@ -110,7 +126,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         txtConsumed.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtConsumed.setForeground(new java.awt.Color(255, 255, 255));
-        txtConsumed.setText("Consumed:");
+        txtConsumed.setText("Taken:");
 
         txtSpent.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtSpent.setForeground(new java.awt.Color(255, 255, 255));
@@ -118,23 +134,122 @@ public class MainFrame extends javax.swing.JFrame {
 
         resGoal.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         resGoal.setForeground(new java.awt.Color(255, 153, 0));
-        resGoal.setText("2000");
+        resGoal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        resGoal.setText("" + dbh.latestGoal());
+        resGoal.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        resGoal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resGoalMouseClicked(evt);
+            }
+        });
 
         resTotal.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         resTotal.setForeground(new java.awt.Color(255, 153, 0));
+        resTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         resTotal.setText("2000");
 
         resConsumed.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         resConsumed.setForeground(new java.awt.Color(255, 153, 0));
+        resConsumed.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         resConsumed.setText("2000");
 
         resSpent.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         resSpent.setForeground(new java.awt.Color(255, 153, 0));
+        resSpent.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         resSpent.setText("2000");
 
-        resToGo.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
-        resToGo.setForeground(new java.awt.Color(255, 153, 0));
-        resToGo.setText("2000");
+        resMargin.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        resMargin.setForeground(new java.awt.Color(255, 153, 0));
+        resMargin.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        resMargin.setText("2000");
+
+        btnSetGoal.setText("...");
+        btnSetGoal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSetGoalActionPerformed(evt);
+            }
+        });
+
+        fatColor.setBackground(new java.awt.Color(255, 200, 0));
+
+        javax.swing.GroupLayout fatColorLayout = new javax.swing.GroupLayout(fatColor);
+        fatColor.setLayout(fatColorLayout);
+        fatColorLayout.setHorizontalGroup(
+            fatColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+        fatColorLayout.setVerticalGroup(
+            fatColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+
+        carbsColor.setBackground(java.awt.Color.cyan);
+
+        javax.swing.GroupLayout carbsColorLayout = new javax.swing.GroupLayout(carbsColor);
+        carbsColor.setLayout(carbsColorLayout);
+        carbsColorLayout.setHorizontalGroup(
+            carbsColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+        carbsColorLayout.setVerticalGroup(
+            carbsColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+
+        proteinColor.setBackground(java.awt.Color.red);
+
+        javax.swing.GroupLayout proteinColorLayout = new javax.swing.GroupLayout(proteinColor);
+        proteinColor.setLayout(proteinColorLayout);
+        proteinColorLayout.setHorizontalGroup(
+            proteinColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+        proteinColorLayout.setVerticalGroup(
+            proteinColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 25, Short.MAX_VALUE)
+        );
+
+        fatTxt.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        fatTxt.setForeground(new java.awt.Color(255, 255, 255));
+        fatTxt.setText("Fat");
+
+        carbsTxt.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        carbsTxt.setForeground(new java.awt.Color(255, 255, 255));
+        carbsTxt.setText("Carbs");
+
+        proteinTxt.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        proteinTxt.setForeground(new java.awt.Color(255, 255, 255));
+        proteinTxt.setText("Protein");
+
+        fatN.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        fatN.setForeground(new java.awt.Color(255, 153, 0));
+        fatN.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        fatN.setText("0");
+
+        proteinN.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        proteinN.setForeground(new java.awt.Color(255, 153, 0));
+        proteinN.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        proteinN.setText("0");
+
+        carbsN.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        carbsN.setForeground(new java.awt.Color(255, 153, 0));
+        carbsN.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        carbsN.setText("0");
+
+        fatG.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        fatG.setForeground(new java.awt.Color(255, 153, 0));
+        fatG.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        fatG.setText("g");
+
+        carbsG.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        carbsG.setForeground(new java.awt.Color(255, 153, 0));
+        carbsG.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        carbsG.setText("g");
+
+        proteinG.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        proteinG.setForeground(new java.awt.Color(255, 153, 0));
+        proteinG.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        proteinG.setText("g");
 
         javax.swing.GroupLayout lPanelLayout = new javax.swing.GroupLayout(lPanel);
         lPanel.setLayout(lPanelLayout);
@@ -142,67 +257,128 @@ public class MainFrame extends javax.swing.JFrame {
             lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lPanelLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(lPanelLayout.createSequentialGroup()
+                            .addComponent(txtMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(resMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                            .addComponent(txtGoal)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                            .addComponent(btnSetGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(28, 28, 28)
+                            .addComponent(resGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(resTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                            .addComponent(txtConsumed)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(resConsumed, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                            .addComponent(txtSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(resSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(lPanelLayout.createSequentialGroup()
-                        .addComponent(txtToGo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(resToGo, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(lPanelLayout.createSequentialGroup()
-                        .addComponent(txtGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(resGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(resTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                        .addComponent(txtConsumed)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(resConsumed, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                        .addComponent(txtSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(resSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(lPanelLayout.createSequentialGroup()
+                                .addComponent(proteinColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(proteinTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(lPanelLayout.createSequentialGroup()
+                                .addComponent(carbsColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(carbsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(lPanelLayout.createSequentialGroup()
+                                .addComponent(fatColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(fatTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(proteinN, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(carbsN, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fatN, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fatG)
+                            .addComponent(proteinG)
+                            .addComponent(carbsG))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         lPanelLayout.setVerticalGroup(
             lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtGoal)
-                    .addComponent(resGoal, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(resGoal)
+                    .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSetGoal)))
+                .addGap(12, 12, 12)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resSpent)
                     .addGroup(lPanelLayout.createSequentialGroup()
-                        .addComponent(resTotal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(resConsumed)
-                        .addGap(12, 12, 12)
-                        .addComponent(resSpent))
-                    .addGroup(lPanelLayout.createSequentialGroup()
-                        .addComponent(txtTotal)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtConsumed)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(2, 2, 2)
                         .addComponent(txtSpent)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(lPanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(resConsumed))
+                    .addGroup(lPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(txtConsumed)))
+                .addGap(28, 28, 28)
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(lPanelLayout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(fatTxt)
+                        .addGap(18, 18, 18)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(carbsColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(carbsTxt))
+                        .addGap(18, 18, 18)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(proteinColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(proteinTxt)))
+                    .addGroup(lPanelLayout.createSequentialGroup()
+                        .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(lPanelLayout.createSequentialGroup()
+                                .addComponent(fatColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(fatN)
+                                    .addComponent(fatG))
+                                .addGap(18, 18, 18)
+                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(carbsN)
+                                    .addComponent(carbsG))
+                                .addGap(18, 18, 18)
+                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(proteinN)
+                                    .addComponent(proteinG))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resTotal)
+                    .addComponent(txtTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtToGo)
-                    .addComponent(resToGo))
-                .addGap(14, 14, 14))
+                    .addComponent(txtMargin)
+                    .addComponent(resMargin))
+                .addContainerGap())
         );
 
         txtDate.setText("Date:");
 
-        resDate.setText("5 May 2016");
-
         lableFood.setText("FOOD");
 
-        lableSport.setText("SPORT");
+        resDate.setText("5 May 2016");
 
         addFood.setText("+");
         addFood.addActionListener(new java.awt.event.ActionListener() {
@@ -211,11 +387,84 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        addSport.setText("+");
+        lableSport.setText("SPORT");
 
+        addSport.setText("+");
+        addSport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSportActionPerformed(evt);
+            }
+        });
+
+        jScrollPane4.setBorder(null);
+
+        textSport.setBackground(new java.awt.Color(238, 238, 238));
+        textSport.setColumns(20);
+        textSport.setRows(5);
+        jScrollPane4.setViewportView(textSport);
+
+        jScrollPane3.setBorder(null);
+
+        textFood.setBackground(new java.awt.Color(238, 238, 238));
         textFood.setColumns(20);
         textFood.setRows(5);
+        textFood.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jScrollPane3.setViewportView(textFood);
+
+        jDateChooser1.setDateFormatString("yyyy-mm-dd");
+
+        javax.swing.GroupLayout rPanel1Layout = new javax.swing.GroupLayout(rPanel1);
+        rPanel1.setLayout(rPanel1Layout);
+        rPanel1Layout.setHorizontalGroup(
+            rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(rPanel1Layout.createSequentialGroup()
+                        .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(rPanel1Layout.createSequentialGroup()
+                                .addComponent(lableFood)
+                                .addGap(18, 18, 18)
+                                .addComponent(addFood, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(rPanel1Layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(lableSport)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(addSport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(rPanel1Layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(rPanel1Layout.createSequentialGroup()
+                        .addComponent(txtDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(resDate)
+                        .addGap(28, 28, 28)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+        rPanel1Layout.setVerticalGroup(
+            rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtDate)
+                        .addComponent(resDate))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addFood)
+                    .addComponent(lableSport)
+                    .addComponent(addSport)
+                    .addComponent(lableFood))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(83, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -223,45 +472,93 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtDate)
-                        .addGap(39, 39, 39)
-                        .addComponent(resDate))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lableFood)
-                        .addGap(27, 27, 27)
-                        .addComponent(addFood, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(280, 280, 280)
-                        .addComponent(lableSport)
-                        .addGap(18, 18, 18)
-                        .addComponent(addSport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDate)
-                    .addComponent(resDate))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lableFood)
-                    .addComponent(addFood)
-                    .addComponent(lableSport)
-                    .addComponent(addSport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 63, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // set value to lable goal
+    private void setGoal() {
+        
+        // if the goal for today was already set
+        if (dbh.checkTotals(today)) {
+            //resGoal.setText("" + goal);
+            resGoal.setText(dbh.getGoal(today));
+            
+        }
+            
+        
+        // if the goal for today hasn't been set -> set as latest goal
+        else {
+            goal = dbh.latestGoal();
+            dbh.insertDataGoal(today, goal);
+            resGoal.setText("" + goal);
+        }
+    }
+    
+    // draw the chart
+    private void addChart() {
+        // no food entered today -> empty chart
+        if (!dbh.checkFood(today)) {
+            
+            pChart = new PieChart();
+            
+        // macros available     
+        } else {
+            int fat = Integer.parseInt(macros[0]);
+            int carbs = Integer.parseInt(macros[1]);
+            int protein = Integer.parseInt(macros[2]);
+            
+            pChart = new PieChart(fat, carbs, protein);
+            
+        }
+        
+        chart.add(pChart.panel);
+        chart.validate();
+        
+    }
+    
+    // redraw chart with new data
+    private void updateChart() {
+        chart.removeAll();
+        chart.revalidate();
+        addChart();
+        chart.repaint();
+    }
+    
+    private void setMacros() {
+        if (macros[0] != null) {
+            fatN.setText(macros[0]);
+            carbsN.setText(macros[1]);
+            proteinN.setText(macros[2]);
+        }
+        
+    }
+    
+    // set value for date lable
+    private void setDate(){
+        resDate.setText(getDate());
+    }
+    
+    // update food and sport text fields
+    private void updatePanels() {
+        food = dbh.getTodayFood(getDate());
+        sport = dbh.getTodaySport(getDate());
+        textFood.setText(food);
+        textSport.setText(sport);
+    }
+    
+    // get todays date
     public String getDate() {
         Calendar calendar = new GregorianCalendar();
         int month = calendar.get(Calendar.MONTH);
@@ -277,20 +574,122 @@ public class MainFrame extends javax.swing.JFrame {
         
     }
     
-    
+    // CLICKED add food
     private void addFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFoodActionPerformed
         AddFood af;
         try {
             af = new AddFood();
             af.setVisible(true);
+            
+            // update MainFrame when AddFood frame is closed
+            af.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    food = dbh.getTodayFood(getDate());
+                    textFood.setText(food);
+                    macros = dbh.getMacros(today);
+                    //pChart = null;
+                    
+                    updateChart();
+                    setTakenCalories(today);
+                    setTotalCalories();
+                    setMarginCalories();
+                    setMacros();
+                }
+            });
+            
+            
+            
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_addFoodActionPerformed
 
+    // CLICKED add sport
+    private void addSportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSportActionPerformed
+        AddSport as;
+        try {
+            as = new AddSport();
+            as.setVisible(true);
+            
+            // update MainFrame when AddSport frame is closed
+            as.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    sport = dbh.getTodaySport(getDate());
+                    textSport.setText(sport);
+                    
+                    setSpentCalories(today);
+                    setTotalCalories();
+                    setMarginCalories();
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_addSportActionPerformed
+
+    private void resGoalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resGoalMouseClicked
+        
+    }//GEN-LAST:event_resGoalMouseClicked
+
+    // CLICKED set goal
+    private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
+        SetGoalD sg = new SetGoalD(this, false);
+        sg.setVisible(true);
+        
+        // update MainFrame when SetGoal dialog is closed
+        sg.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                goal = sg.goal();
+                resGoal.setText("" + goal);
+                setMarginCalories();
+                //dbh.printAllTotals(); 
+            }
+        });
+        
+    }//GEN-LAST:event_btnSetGoalActionPerformed
+
+    // set total consumed calories counter
+    private void setTakenCalories(String date) {
+        if (dbh.checkFood(today))
+            resConsumed.setText(dbh.getFoodTotal(date));
+        else
+            resConsumed.setText("0");
+    }
     
+    // set total spent calories counter
+    private void setSpentCalories(String date) {
+        if (dbh.checkSport(today))
+            resSpent.setText(dbh.getSportTotal(date));
+        else
+            resSpent.setText("0");
+    }
     
+    // set total calories counter
+    private void setTotalCalories() {
+        int foodCal = Integer.parseInt(resConsumed.getText());
+        int sportCal = Integer.parseInt(resSpent.getText());
+        int totalCal = foodCal - sportCal;
+        
+        resTotal.setText("" + totalCal);
+    }
+    
+    // set margin counter 
+    private void setMarginCalories() {
+        
+        int totalCal = Integer.parseInt(resTotal.getText());
+        int goalCal = Integer.parseInt(resGoal.getText());
+        int margin = goalCal - totalCal;
+        
+        resMargin.setText("" + margin);
+    }
+    
+    //REMOVE main ???
     /**
      * @param args the command line arguments
      */
@@ -322,33 +721,48 @@ public class MainFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainFrame().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFood;
     private javax.swing.JButton addSport;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btnSetGoal;
+    private javax.swing.JPanel carbsColor;
+    private javax.swing.JLabel carbsG;
+    private javax.swing.JLabel carbsN;
+    private javax.swing.JLabel carbsTxt;
+    private javax.swing.JPanel chart;
+    private javax.swing.JPanel fatColor;
+    private javax.swing.JLabel fatG;
+    private javax.swing.JLabel fatN;
+    private javax.swing.JLabel fatTxt;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPanel lPanel;
     private javax.swing.JLabel lableFood;
     private javax.swing.JLabel lableSport;
+    private javax.swing.JPanel proteinColor;
+    private javax.swing.JLabel proteinG;
+    private javax.swing.JLabel proteinN;
+    private javax.swing.JLabel proteinTxt;
+    private javax.swing.JPanel rPanel1;
     private javax.swing.JLabel resConsumed;
     private javax.swing.JLabel resDate;
     private javax.swing.JLabel resGoal;
+    private javax.swing.JLabel resMargin;
     private javax.swing.JLabel resSpent;
-    private javax.swing.JLabel resToGo;
     private javax.swing.JLabel resTotal;
     private javax.swing.JTextArea textFood;
+    private javax.swing.JTextArea textSport;
     private javax.swing.JLabel txtConsumed;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtGoal;
+    private javax.swing.JLabel txtMargin;
     private javax.swing.JLabel txtSpent;
-    private javax.swing.JLabel txtToGo;
     private javax.swing.JLabel txtTotal;
     // End of variables declaration//GEN-END:variables
 }

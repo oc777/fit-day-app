@@ -1,16 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package myfitdayapp;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+
+
 
 
 /**
- *
+ * frame for adding new consumption entries
+ * name, calories and macros
+ * 
  * @author olgachristensen
  */
 public class AddFood extends javax.swing.JFrame {
@@ -23,6 +24,7 @@ public class AddFood extends javax.swing.JFrame {
     public AddFood() throws Exception {
         initComponents();
         dbh = new DBHandler();
+        
     }
 
     /**
@@ -46,6 +48,7 @@ public class AddFood extends javax.swing.JFrame {
         fProtein = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        errorMsg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -98,37 +101,44 @@ public class AddFood extends javax.swing.JFrame {
             }
         });
 
+        errorMsg.setForeground(new java.awt.Color(255, 51, 51));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lName)
-                    .addComponent(lCal)
-                    .addComponent(lFat)
-                    .addComponent(lCarbs)
-                    .addComponent(lProtein))
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fName, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fCal, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fFat, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fCarbs, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fProtein, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(74, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdd)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(errorMsg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lName)
+                                    .addComponent(lCal)
+                                    .addComponent(lFat)
+                                    .addComponent(lCarbs)
+                                    .addComponent(lProtein))
+                                .addGap(64, 64, 64)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fName, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fCal, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fFat, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fCarbs, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fProtein, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(214, Short.MAX_VALUE)
+                        .addComponent(btnAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancel)))
                 .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lName)
                     .addComponent(fName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -148,7 +158,9 @@ public class AddFood extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fProtein, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lProtein))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(errorMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnCancel))
@@ -174,37 +186,65 @@ public class AddFood extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fProteinActionPerformed
 
+    // if clicked CANCEL - close the frame 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         super.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    // if clicked ADD - insert data in DB and close the frame 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         
-        int cal = Integer.parseInt(fCal.getText());
-        int fat = Integer.parseInt(fFat.getText());
-        int carb = Integer.parseInt(fCarbs.getText());
-        int p = Integer.parseInt(fProtein.getText());
+        Border border = BorderFactory.createLineBorder(Color.RED, 1);
         
-        dbh.insertData(getDate(), fName.getText(), cal, fat, carb, p);
+        try {
+            
+            int cal = Integer.parseInt(fCal.getText());
+            int fat = Integer.parseInt(fFat.getText());
+            int carb = Integer.parseInt(fCarbs.getText());
+            int p = Integer.parseInt(fProtein.getText());
+
+            dbh.insertDataFood(dbh.getDate(), fName.getText(), cal, fat, carb, p);
+            
+            
+            
+            super.dispose();
+        
+        } catch (NumberFormatException e) {
+            errorMsg.setText("Only integers");
+            
+            try {
+                int cal = Integer.parseInt(fCal.getText());
+            } catch (NumberFormatException ex) {
+                fCal.setBorder(border);
+            }
+            
+            try {
+                int f = Integer.parseInt(fFat.getText());
+            } catch (NumberFormatException ex) {
+                fFat.setBorder(border);
+            }
+            
+            try {
+                int carb = Integer.parseInt(fCarbs.getText());
+            } catch (NumberFormatException ex) {
+                fCarbs.setBorder(border);
+            }
+            
+            try {
+                int p = Integer.parseInt(fProtein.getText());
+            } catch (NumberFormatException ex) {
+                fProtein.setBorder(border);
+            }
+            
+        }
+        
+        
     
-        dbh.printAll();
-        super.dispose();
+        //dbh.printAllFood();
+        
     }//GEN-LAST:event_btnAddActionPerformed
 
-    public String getDate() {
-        Calendar calendar = new GregorianCalendar();
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        
-        String date = "";
-        date += day +"."+(month+1)+"."+ year;
-        
-        
-        return date;
-    }
-    
-    
+    // REMOVE main???
     /**
      * @param args the command line arguments
      */
@@ -248,6 +288,7 @@ public class AddFood extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnCancel;
+    private javax.swing.JLabel errorMsg;
     private javax.swing.JTextField fCal;
     private javax.swing.JTextField fCarbs;
     private javax.swing.JTextField fFat;
