@@ -6,6 +6,7 @@
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="e6" green="e6" red="e6" type="rgb"/>
     </Property>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -305,9 +306,6 @@
             </Property>
             <Property name="horizontalTextPosition" type="int" value="4"/>
           </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="resGoalMouseClicked"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="resTotal">
           <Properties>

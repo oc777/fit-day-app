@@ -5,21 +5,52 @@
  */
 package myfitdayapp;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  *
  * @author olgachristensen
  */
-public class SetGoalD extends javax.swing.JDialog {
+public class SetGoalD extends javax.swing.JFrame {
     private int goal;
     private DBHandler dbh;
     
     /**
      * Creates new form SetGoalD
      */
-    public SetGoalD(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public SetGoalD() {
+        //super(parent, modal);
+        setUndecorated(true);
         initComponents();
         dbh = new DBHandler();
+        
+        fGoal.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                check();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                check();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                check();
+            }
+            
+        });
+    }
+    
+    private void check() {
+        if (fGoal.getText().equals(""))
+            btnSetGoal.setEnabled(false);
+        
+        else 
+            btnSetGoal.setEnabled(true);
     }
 
     /**
@@ -35,12 +66,15 @@ public class SetGoalD extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         btnSetGoal = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        errorMsg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Goal:");
 
         btnSetGoal.setText("Set");
+        btnSetGoal.setEnabled(false);
         btnSetGoal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSetGoalActionPerformed(evt);
@@ -54,36 +88,42 @@ public class SetGoalD extends javax.swing.JDialog {
             }
         });
 
+        errorMsg.setForeground(java.awt.Color.red);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel1))
+                        .addComponent(btnSetGoal)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancel))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(btnSetGoal)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fGoal))
-                .addGap(74, 74, 74))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(errorMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fGoal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(71, 71, 71)
+                .addGap(44, 44, 44)
+                .addComponent(jLabel1)
+                .addGap(4, 4, 4)
+                .addComponent(fGoal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(errorMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSetGoal)
                     .addComponent(btnCancel))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
@@ -94,12 +134,17 @@ public class SetGoalD extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
-        goal = Integer.parseInt(fGoal.getText());
-        System.out.println(goal);
+        Border border = BorderFactory.createLineBorder(Color.RED, 1);
         
-        dbh.insertDataGoal(dbh.getDate(), goal);
-        
-        dispose();
+        try {
+            goal = Integer.parseInt(fGoal.getText());
+            System.out.println(goal);
+            dbh.insertDataGoal(dbh.getDate(), goal);
+            dispose();
+        } catch (NumberFormatException e) {
+            errorMsg.setText("Only integers");
+            fGoal.setBorder(border);
+        }
     }//GEN-LAST:event_btnSetGoalActionPerformed
 
     
@@ -158,6 +203,7 @@ public class SetGoalD extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSetGoal;
+    private javax.swing.JLabel errorMsg;
     private javax.swing.JTextField fGoal;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

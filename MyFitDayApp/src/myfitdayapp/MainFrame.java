@@ -95,6 +95,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(230, 230, 230));
+        setResizable(false);
 
         lPanel.setBackground(java.awt.Color.darkGray);
 
@@ -137,11 +138,6 @@ public class MainFrame extends javax.swing.JFrame {
         resGoal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         resGoal.setText("" + dbh.latestGoal());
         resGoal.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        resGoal.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                resGoalMouseClicked(evt);
-            }
-        });
 
         resTotal.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         resTotal.setForeground(new java.awt.Color(255, 153, 0));
@@ -494,7 +490,6 @@ public class MainFrame extends javax.swing.JFrame {
         if (dbh.checkTotals(today)) {
             //resGoal.setText("" + goal);
             resGoal.setText(dbh.getGoal(today));
-            
         }
             
         
@@ -552,10 +547,19 @@ public class MainFrame extends javax.swing.JFrame {
     
     // update food and sport text fields
     private void updatePanels() {
-        food = dbh.getTodayFood(getDate());
+        if (dbh.checkFood(today)) {
+            food = dbh.getTodayFood(today);
+            textFood.setText(food);
+        }
+        else
+            textFood.setText("");
+        
+        if (dbh.checkSport(today)) {
         sport = dbh.getTodaySport(getDate());
-        textFood.setText(food);
         textSport.setText(sport);
+        }
+        else
+            textSport.setText("");
     }
     
     // get todays date
@@ -579,16 +583,16 @@ public class MainFrame extends javax.swing.JFrame {
         AddFood af;
         try {
             af = new AddFood();
+            af.setLocationRelativeTo(this);
             af.setVisible(true);
             
             // update MainFrame when AddFood frame is closed
             af.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    food = dbh.getTodayFood(getDate());
+                    food = dbh.getTodayFood(today);
                     textFood.setText(food);
                     macros = dbh.getMacros(today);
-                    //pChart = null;
                     
                     updateChart();
                     setTakenCalories(today);
@@ -611,13 +615,15 @@ public class MainFrame extends javax.swing.JFrame {
         AddSport as;
         try {
             as = new AddSport();
+            as.setLocationRelativeTo(this);
             as.setVisible(true);
+            
             
             // update MainFrame when AddSport frame is closed
             as.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    sport = dbh.getTodaySport(getDate());
+                    sport = dbh.getTodaySport(today);
                     textSport.setText(sport);
                     
                     setSpentCalories(today);
@@ -632,21 +638,19 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_addSportActionPerformed
 
-    private void resGoalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resGoalMouseClicked
-        
-    }//GEN-LAST:event_resGoalMouseClicked
-
     // CLICKED set goal
     private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
-        SetGoalD sg = new SetGoalD(this, false);
+        SetGoalD sg = new SetGoalD();
+        sg.setLocationRelativeTo(this);
         sg.setVisible(true);
         
         // update MainFrame when SetGoal dialog is closed
         sg.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                goal = sg.goal();
-                resGoal.setText("" + goal);
+                //goal = sg.goal();
+                //resGoal.setText("" + goal);
+                setGoal();
                 setMarginCalories();
                 //dbh.printAllTotals(); 
             }
@@ -672,11 +676,14 @@ public class MainFrame extends javax.swing.JFrame {
     
     // set total calories counter
     private void setTotalCalories() {
-        int foodCal = Integer.parseInt(resConsumed.getText());
-        int sportCal = Integer.parseInt(resSpent.getText());
-        int totalCal = foodCal - sportCal;
-        
-        resTotal.setText("" + totalCal);
+        //if (dbh.checkSport(today)) {
+            int foodCal = Integer.parseInt(resConsumed.getText());
+            int sportCal = Integer.parseInt(resSpent.getText());
+            int totalCal = foodCal - sportCal;
+
+            resTotal.setText("" + totalCal);
+        //} else
+        //    resTotal.setText("0");
     }
     
     // set margin counter 
