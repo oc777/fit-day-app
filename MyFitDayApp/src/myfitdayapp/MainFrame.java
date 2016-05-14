@@ -28,7 +28,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     public MainFrame() {
         dbh = new DBHandler();
-        today = getDate();
+        //today = getDate();
+        today = dbh.getDate();
         macros = dbh.getMacros(today);
         
         initComponents();
@@ -91,7 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
         textSport = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         textFood = new javax.swing.JTextArea();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        btnDate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(230, 230, 230));
@@ -407,7 +408,12 @@ public class MainFrame extends javax.swing.JFrame {
         textFood.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jScrollPane3.setViewportView(textFood);
 
-        jDateChooser1.setDateFormatString("yyyy-mm-dd");
+        btnDate.setText("date");
+        btnDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout rPanel1Layout = new javax.swing.GroupLayout(rPanel1);
         rPanel1.setLayout(rPanel1Layout);
@@ -436,19 +442,18 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(txtDate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(resDate)
-                        .addGap(28, 28, 28)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(42, 42, 42)
+                        .addComponent(btnDate)))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
         rPanel1Layout.setVerticalGroup(
             rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtDate)
-                        .addComponent(resDate))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDate)
+                    .addComponent(resDate)
+                    .addComponent(btnDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addFood)
@@ -459,7 +464,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -468,7 +473,7 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -477,7 +482,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(lPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 63, Short.MAX_VALUE))
+                .addGap(0, 105, Short.MAX_VALUE))
         );
 
         pack();
@@ -537,12 +542,19 @@ public class MainFrame extends javax.swing.JFrame {
             carbsN.setText(macros[1]);
             proteinN.setText(macros[2]);
         }
+        else {
+            fatN.setText("0");
+            carbsN.setText("0");
+            proteinN.setText("0");
+        }
+            
         
     }
     
     // set value for date lable
     private void setDate(){
-        resDate.setText(getDate());
+        //resDate.setText(getDate());
+        resDate.setText(today);
     }
     
     // update food and sport text fields
@@ -555,8 +567,8 @@ public class MainFrame extends javax.swing.JFrame {
             textFood.setText("");
         
         if (dbh.checkSport(today)) {
-        sport = dbh.getTodaySport(getDate());
-        textSport.setText(sport);
+            sport = dbh.getTodaySport(today);
+            textSport.setText(sport);
         }
         else
             textSport.setText("");
@@ -644,7 +656,7 @@ public class MainFrame extends javax.swing.JFrame {
         sg.setLocationRelativeTo(this);
         sg.setVisible(true);
         
-        // update MainFrame when SetGoal dialog is closed
+        // update MainFrame when SetGoal frame is closed
         sg.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -657,6 +669,33 @@ public class MainFrame extends javax.swing.JFrame {
         });
         
     }//GEN-LAST:event_btnSetGoalActionPerformed
+
+    private void btnDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateActionPerformed
+        ChooseDate cd = new ChooseDate(today);
+        cd.setLocationRelativeTo(this);
+        cd.setVisible(true);
+        
+        // update MainFrame when chooseDate frame is closed
+        cd.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                today = cd.date;
+                System.out.println(today);
+                macros = dbh.getMacros(today);
+                setDate();
+                updateChart();
+                
+                updatePanels();
+                setGoal();
+                setTakenCalories(today);
+                setSpentCalories(today);
+                setTotalCalories();
+                setMarginCalories();
+                setMacros();
+
+            }
+        });
+    }//GEN-LAST:event_btnDateActionPerformed
 
     // set total consumed calories counter
     private void setTakenCalories(String date) {
@@ -736,6 +775,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFood;
     private javax.swing.JButton addSport;
+    private javax.swing.JButton btnDate;
     private javax.swing.JButton btnSetGoal;
     private javax.swing.JPanel carbsColor;
     private javax.swing.JLabel carbsG;
@@ -746,7 +786,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel fatG;
     private javax.swing.JLabel fatN;
     private javax.swing.JLabel fatTxt;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPanel lPanel;
