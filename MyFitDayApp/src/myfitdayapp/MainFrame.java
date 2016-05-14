@@ -640,7 +640,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // CLICKED set goal
     private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
-        SetGoalD sg = new SetGoalD();
+        SetGoal sg = new SetGoal();
         sg.setLocationRelativeTo(this);
         sg.setVisible(true);
         

@@ -5,17 +5,52 @@
  */
 package myfitdayapp;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  *
  * @author olgachristensen
  */
 public class SetGoal extends javax.swing.JFrame {
-
+    private int goal;
+    private DBHandler dbh;
+    
     /**
-     * Creates new form SetGoal
+     * Creates new form SetGoalD
      */
     public SetGoal() {
+        //super(parent, modal);
+        setUndecorated(true);
         initComponents();
+        dbh = new DBHandler();
+        
+        fGoal.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                check();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                check();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                check();
+            }
+            
+        });
+    }
+    
+    private void check() {
+        if (fGoal.getText().equals(""))
+            btnSetGoal.setEnabled(false);
+        
+        else 
+            btnSetGoal.setEnabled(true);
     }
 
     /**
@@ -27,89 +62,108 @@ public class SetGoal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lGoal = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         fGoal = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        btnSetGoal = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        errorMsg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
-        lGoal.setText("Goal:");
+        jLabel1.setText("Goal:");
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSetGoal.setText("Set");
+        btnSetGoal.setEnabled(false);
+        btnSetGoal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSetGoalActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCancelActionPerformed(evt);
             }
         });
 
-        fGoal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fGoalActionPerformed(evt);
-            }
-        });
+        errorMsg.setForeground(java.awt.Color.red);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(lGoal)
-                .addGap(87, 87, 87)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addComponent(btnSetGoal)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(errorMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(44, 44, 44)
+                .addComponent(jLabel1)
+                .addGap(4, 4, 4)
+                .addComponent(fGoal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(errorMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lGoal)
-                    .addComponent(fGoal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(btnSetGoal)
+                    .addComponent(btnCancel))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fGoalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fGoalActionPerformed
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        super.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
+        Border border = BorderFactory.createLineBorder(Color.RED, 1);
+        
+        try {
+            goal = Integer.parseInt(fGoal.getText());
+            System.out.println(goal);
+            dbh.insertDataGoal(dbh.getDate(), goal);
+            dispose();
+        } catch (NumberFormatException e) {
+            errorMsg.setText("Only integers");
+            fGoal.setBorder(border);
+        }
+    }//GEN-LAST:event_btnSetGoalActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    
+    public int goal() {
+        return goal;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
+    /*
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+    /*
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -118,28 +172,39 @@ public class SetGoal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SetGoal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SetGoal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SetGoal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SetGoal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SetGoal().setVisible(true);
+                SetGoalD dialog = new SetGoalD(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
+        
     }
+    */
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnSetGoal;
+    private javax.swing.JLabel errorMsg;
     private javax.swing.JTextField fGoal;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel lGoal;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
