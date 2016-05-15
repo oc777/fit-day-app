@@ -23,6 +23,7 @@ public class EditFood extends javax.swing.JFrame {
     private ResultSet rs;
     public String date;
     private int selectedRow;
+    private DefaultTableModel dtm;
     
     /**
      * Creates new form EditFood
@@ -30,7 +31,7 @@ public class EditFood extends javax.swing.JFrame {
     public EditFood(String d) {
         
         dbh = new DBHandler();
-        rs = dbh.getFood(d);
+        rs = dbh.getFoodTable(d);
         date = d;
         selectedRow = 0;
         
@@ -95,12 +96,6 @@ public class EditFood extends javax.swing.JFrame {
         carbLable.setText("Carbs:");
 
         proteinLable.setText("Protein:");
-
-        carbField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                carbFieldActionPerformed(evt);
-            }
-        });
 
         btnUpdate.setText("Update");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -208,12 +203,13 @@ public class EditFood extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
-    private void carbFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carbFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_carbFieldActionPerformed
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
+
+        dtm.removeRow(selectedRow);
+        dbh.updateFoodDelete(date, selectedRow, data);
+        emptyTextBoxes();
+        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void foodTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTableMouseClicked
@@ -252,33 +248,21 @@ public class EditFood extends javax.swing.JFrame {
         String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
         //updateDB(nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText());
         
-        dbh.updateFood(date, selectedRow, data);
+        dbh.updateFoodEdit(date, selectedRow, data);
         
-        nameField.setText("");
-        calField.setText("");
-        fatField.setText("");
-        carbField.setText("");
-        proteinField.setText("");
+        emptyTextBoxes();
         
         
         
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void updateDB(String name, String cal, String fat, String carb, String protein) {
-        try {
-        
-        rs.beforeFirst();
-        int i = 0;
-        while(rs.next()) {
-            ++i;
-            if (i == selectedRow) {
-                
-            }
-        }
-        
-        } catch (SQLException e) {
-            System.out.println("Update DB fail: " + e);
-        }
+    
+    private void emptyTextBoxes() {
+        nameField.setText("");
+        calField.setText("");
+        fatField.setText("");
+        carbField.setText("");
+        proteinField.setText("");
     }
     
     public DefaultTableModel buildTable(ResultSet rs)  {
@@ -308,9 +292,9 @@ public class EditFood extends javax.swing.JFrame {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         } 
 
-        DefaultTableModel table = new DefaultTableModel(data, columnNames);
+        dtm = new DefaultTableModel(data, columnNames);
         
-        return table;
+        return dtm;
 
     }
     

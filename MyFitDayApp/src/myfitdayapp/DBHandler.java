@@ -72,7 +72,7 @@ public class DBHandler {
             connection.createStatement().execute("insert into food values('"
                     +date+"','"+name+"',"+cal+","+f+","+c+","+p+")");
             
-            updateTotalsFood(date, cal, f, c, p);
+            updateTotalsFood(date);
             
             macros = getMacros(date);
             
@@ -209,8 +209,41 @@ public class DBHandler {
         return goal;
     }
     
-    // updates totals when new food entry is made
-    public void updateTotalsFood(String date, int cal, int f, int c, int p) {
+    // calculate totals for food
+    public void updateTotalsFood(String date) {
+        try {
+            Statement st = connection.createStatement();
+            
+            ResultSet rsFood = st.executeQuery("select * from food where date='" + date + "'");
+            
+            int cal = 0;
+            int fat = 0;
+            int carb = 0;
+            int prot = 0;
+            
+            while (rsFood.next()) {
+                cal += Integer.parseInt(rsFood.getString("cal"));
+                fat += Integer.parseInt(rsFood.getString("fat"));
+                carb += Integer.parseInt(rsFood.getString("carbs"));
+                prot += Integer.parseInt(rsFood.getString("protein"));
+            }
+            
+            ResultSet rsTotals = st.executeQuery("select * from totals where date='" + date + "'");
+            
+            if (rsTotals.next()) {
+                st.execute("update totals set food="+cal+",fat="+fat+",carbs="+carb+",protein="+prot 
+                        +" where date='" + date + "'");
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    // updates totals when new food entry is made (food added)
+    public void updateTotalsFoodAdd(String date, int cal, int f, int c, int p) {
         try {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
@@ -240,6 +273,33 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    // updates totals when a food entry is removed
+    public void updateTotalsFoodDelete (String date, int cal, int f, int c, int p) {
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
+            
+            if (rs.next()) {
+            
+                
+                int calories = Integer.parseInt(rs.getString("food")) - cal;
+                int fat = Integer.parseInt(rs.getString("fat")) - f;
+                int carbs = Integer.parseInt(rs.getString("carbs")) - c;
+                int protein = Integer.parseInt(rs.getString("protein")) - p;
+
+                st.execute("update totals set food="+calories+",fat="+fat+",carbs="+carbs+",protein="+protein 
+                            +" where date='" + date + "'");
+
+                
+            }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     // updates totals when new sport entry is made
     public void updateTotalsSport(String date, int cal) {
@@ -411,9 +471,9 @@ public class DBHandler {
 
             while(rs.next()) {
                 // testing
-                System.out.println("");
-                System.out.format("%20s", rs.getString(2) + " | ");
-                System.out.format("%5s", rs.getString(3) + " | ");
+                //System.out.println("");
+                //System.out.format("%20s", rs.getString(2) + " | ");
+                //System.out.format("%5s", rs.getString(3) + " | ");
 
                 str += rs.getString(2);
                 str += ".....";
@@ -440,9 +500,9 @@ public class DBHandler {
 
             while(rs.next()) {
                 // testing
-                System.out.println("");
-                System.out.format("%20s", rs.getString(2) + " | ");
-                System.out.format("%5s", rs.getString(3) + " | ");
+                //System.out.println("");
+                //System.out.format("%20s", rs.getString(2) + " | ");
+                //System.out.format("%5s", rs.getString(3) + " | ");
 
                 str += rs.getString(2);
                 str += ".....";
@@ -457,37 +517,10 @@ public class DBHandler {
         
         return str;
     }
-    /*
-    public void getFoodMatrix(String date) {
-        int lines = 0;
-        
-        
-        try {
-            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
-            
-            if (rs.next()) {
-                rs.last();
-                lines = rs.getRow();
-                rs.beforeFirst();
-                
-                Object[][] result = new Object[lines][5];
-            
-            
-            while (rs.next()) {
-                ++lines;
-                String name = "record" + lines;
-                
-            }
-            }
-            
-        } catch () {
-            
-        }
-    }
-    */
     
-    public ResultSet getFood(String date) {
+
+    
+    public ResultSet getFoodTable(String date) {
         ResultSet rs = null;
         try {
             Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -500,7 +533,9 @@ public class DBHandler {
             
     }
     
-    public void updateFood(String date, int index, String[] data) {
+    
+    
+    public void updateFoodEdit(String date, int index, String[] data) {
         
         try {
             Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -523,11 +558,13 @@ public class DBHandler {
                     
                     rs.updateRow();
                     System.out.println("updated row");
+                    
+                    break;
                 }
                 i++;
             }
             
-            updateTotalsFood(date, cal, f, c, p);
+            updateTotalsFood(date);
             
             macros = getMacros(date);
         
@@ -536,6 +573,40 @@ public class DBHandler {
         } catch (NumberFormatException ex) {
             System.out.println("Int parser err: " + ex);
         }
+        
+    }
+    
+    public void updateFoodDelete(String date, int index, String[] data) {
+        int cal = Integer.parseInt(data[1]);
+        int f = Integer.parseInt(data[2]);
+        int c = Integer.parseInt(data[3]);
+        int p = Integer.parseInt(data[4]);
+        
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
+            
+            int i = 0;
+            while(rs.next()) {
+                
+                if (i == index) {
+                    rs.deleteRow();
+                    System.out.println("deleted row");
+                    
+                    break;
+                }
+                i++;
+            }
+            
+            updateTotalsFood(date);
+            
+            macros = getMacros(date);
+            
+            
+        } catch (SQLException e) {
+            System.out.println("updateFoodDelete fail " + e);
+        }
+        
         
     }
     
