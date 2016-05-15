@@ -545,7 +545,7 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="addFood" min="-2" pref="45" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                  <Component id="btnShowFood" min="-2" max="-2" attributes="0"/>
+                                  <Component id="editFood" min="-2" pref="45" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane3" alignment="0" min="-2" pref="340" max="-2" attributes="0"/>
                           </Group>
@@ -589,7 +589,7 @@
                       <Component id="lableSport" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="addSport" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lableFood" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnShowFood" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="editFood" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -697,12 +697,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDateActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnShowFood">
+        <Component class="javax.swing.JButton" name="editFood">
           <Properties>
-            <Property name="text" type="java.lang.String" value="show food"/>
+            <Property name="text" type="java.lang.String" value="..."/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnShowFoodActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editFoodActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -74,7 +74,6 @@ public class DBHandler {
             
             updateTotalsFood(date, cal, f, c, p);
             
-            //printAllTotals();
             macros = getMacros(date);
             
             
@@ -491,7 +490,7 @@ public class DBHandler {
     public ResultSet getFood(String date) {
         ResultSet rs = null;
         try {
-            Statement st = connection.createStatement();
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
         } catch  (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -499,6 +498,45 @@ public class DBHandler {
         
         return rs;
             
+    }
+    
+    public void updateFood(String date, int index, String[] data) {
+        
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
+            
+            int cal = Integer.parseInt(data[1]);
+            int f = Integer.parseInt(data[2]);
+            int c = Integer.parseInt(data[3]);
+            int p = Integer.parseInt(data[4]);
+            
+            int i = 0;
+            while(rs.next()) {
+                
+                if (i == index) {
+                    rs.updateString("name", data[0]);
+                    rs.updateInt("cal", cal);
+                    rs.updateInt("fat", f);
+                    rs.updateInt("carbs", c);
+                    rs.updateInt("protein", p);
+                    
+                    rs.updateRow();
+                    System.out.println("updated row");
+                }
+                i++;
+            }
+            
+            updateTotalsFood(date, cal, f, c, p);
+            
+            macros = getMacros(date);
+        
+        } catch (SQLException e) {
+            System.out.println("Update DB fail: " + e);
+        } catch (NumberFormatException ex) {
+            System.out.println("Int parser err: " + ex);
+        }
+        
     }
     
     

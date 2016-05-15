@@ -93,7 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         textFood = new javax.swing.JTextArea();
         btnDate = new javax.swing.JButton();
-        btnShowFood = new javax.swing.JButton();
+        editFood = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(230, 230, 230));
@@ -416,10 +416,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        btnShowFood.setText("show food");
-        btnShowFood.addActionListener(new java.awt.event.ActionListener() {
+        editFood.setText("...");
+        editFood.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnShowFoodActionPerformed(evt);
+                editFoodActionPerformed(evt);
             }
         });
 
@@ -437,7 +437,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(addFood, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
-                                .addComponent(btnShowFood))
+                                .addComponent(editFood, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(rPanel1Layout.createSequentialGroup()
@@ -470,7 +470,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(lableSport)
                     .addComponent(addSport)
                     .addComponent(lableFood)
-                    .addComponent(btnShowFood))
+                    .addComponent(editFood))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -708,13 +708,30 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_btnDateActionPerformed
 
-    private void btnShowFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowFoodActionPerformed
+    private void editFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editFoodActionPerformed
         EditFood ef = new EditFood(today);
         
         ef.setLocationRelativeTo(this);
         ef.setVisible(true);
         
-    }//GEN-LAST:event_btnShowFoodActionPerformed
+        
+        // update MainFrame when AddFood frame is closed
+        ef.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                food = dbh.getTodayFood(today);
+                textFood.setText(food);
+                macros = dbh.getMacros(today);
+                    
+                updateChart();
+                setTakenCalories(today);
+                setTotalCalories();
+                setMarginCalories();
+                setMacros();
+            }
+        });
+        
+    }//GEN-LAST:event_editFoodActionPerformed
 
     // set total consumed calories counter
     private void setTakenCalories(String date) {
@@ -796,12 +813,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton addSport;
     private javax.swing.JButton btnDate;
     private javax.swing.JButton btnSetGoal;
-    private javax.swing.JButton btnShowFood;
     private javax.swing.JPanel carbsColor;
     private javax.swing.JLabel carbsG;
     private javax.swing.JLabel carbsN;
     private javax.swing.JLabel carbsTxt;
     private javax.swing.JPanel chart;
+    private javax.swing.JButton editFood;
     private javax.swing.JPanel fatColor;
     private javax.swing.JLabel fatG;
     private javax.swing.JLabel fatN;

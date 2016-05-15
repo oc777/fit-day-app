@@ -22,6 +22,7 @@ public class EditFood extends javax.swing.JFrame {
     private DBHandler dbh;
     private ResultSet rs;
     public String date;
+    private int selectedRow;
     
     /**
      * Creates new form EditFood
@@ -31,10 +32,14 @@ public class EditFood extends javax.swing.JFrame {
         dbh = new DBHandler();
         rs = dbh.getFood(d);
         date = d;
+        selectedRow = 0;
         
         setUndecorated(true);
         initComponents();
+        showDateLable.setText(d);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,6 +71,7 @@ public class EditFood extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
+        foodTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         foodTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 foodTableMouseClicked(evt);
@@ -97,6 +103,11 @@ public class EditFood extends javax.swing.JFrame {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -192,6 +203,8 @@ public class EditFood extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        try { rs.close(); }
+        catch (SQLException e) { System.out.println(e); }
         dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
@@ -205,21 +218,23 @@ public class EditFood extends javax.swing.JFrame {
 
     private void foodTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTableMouseClicked
         
-        int row = foodTable.getSelectedRow();
-            
-        String n = foodTable.getModel().getValueAt(row, 0).toString();
+        //int row = foodTable.getSelectedRow();
+        selectedRow = foodTable.getSelectedRow();
+        System.out.println(selectedRow);
+        
+        String n = foodTable.getModel().getValueAt(selectedRow, 0).toString();
         nameField.setText(n);
             
-        String cal = foodTable.getModel().getValueAt(row, 1).toString();
+        String cal = foodTable.getModel().getValueAt(selectedRow, 1).toString();
         calField.setText(cal);
         
-        String f = foodTable.getModel().getValueAt(row, 2).toString();
+        String f = foodTable.getModel().getValueAt(selectedRow, 2).toString();
         fatField.setText(f);
         
-        String c = foodTable.getModel().getValueAt(row, 3).toString();
+        String c = foodTable.getModel().getValueAt(selectedRow, 3).toString();
         carbField.setText(c);
         
-        String p = foodTable.getModel().getValueAt(row,4).toString();
+        String p = foodTable.getModel().getValueAt(selectedRow,4).toString();
         proteinField.setText(p);
             
             
@@ -227,18 +242,47 @@ public class EditFood extends javax.swing.JFrame {
         
     }//GEN-LAST:event_foodTableMouseClicked
 
-    
-    private Object [][] getAllFood() {
-        int lines = 0;
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        foodTable.setValueAt(nameField.getText(), selectedRow, 0);
+        foodTable.setValueAt(calField.getText(), selectedRow, 1);
+        foodTable.setValueAt(fatField.getText(), selectedRow, 2);
+        foodTable.setValueAt(carbField.getText(), selectedRow, 3);
+        foodTable.setValueAt(proteinField.getText(), selectedRow, 4);
         
-        Object[][] result = new Object[lines][5];
+        String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
+        //updateDB(nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText());
+        
+        dbh.updateFood(date, selectedRow, data);
+        
+        nameField.setText("");
+        calField.setText("");
+        fatField.setText("");
+        carbField.setText("");
+        proteinField.setText("");
         
         
         
-        return result;
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void updateDB(String name, String cal, String fat, String carb, String protein) {
+        try {
+        
+        rs.beforeFirst();
+        int i = 0;
+        while(rs.next()) {
+            ++i;
+            if (i == selectedRow) {
+                
+            }
+        }
+        
+        } catch (SQLException e) {
+            System.out.println("Update DB fail: " + e);
+        }
     }
     
     public DefaultTableModel buildTable(ResultSet rs)  {
+        
         Vector<String> columnNames = new Vector<String>();
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
         
@@ -264,7 +308,9 @@ public class EditFood extends javax.swing.JFrame {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         } 
 
-        return new DefaultTableModel(data, columnNames);
+        DefaultTableModel table = new DefaultTableModel(data, columnNames);
+        
+        return table;
 
     }
     
