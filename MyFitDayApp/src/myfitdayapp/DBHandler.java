@@ -427,6 +427,7 @@ public class DBHandler {
         
         return str;
     }
+    
     // returns a string of all sport entries for the date
     // name + calories
     public String getTodaySport(String date) {
@@ -457,6 +458,49 @@ public class DBHandler {
         
         return str;
     }
+    /*
+    public void getFoodMatrix(String date) {
+        int lines = 0;
+        
+        
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
+            
+            if (rs.next()) {
+                rs.last();
+                lines = rs.getRow();
+                rs.beforeFirst();
+                
+                Object[][] result = new Object[lines][5];
+            
+            
+            while (rs.next()) {
+                ++lines;
+                String name = "record" + lines;
+                
+            }
+            }
+            
+        } catch () {
+            
+        }
+    }
+    */
+    
+    public ResultSet getFood(String date) {
+        ResultSet rs = null;
+        try {
+            Statement st = connection.createStatement();
+            rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
+        } catch  (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        return rs;
+            
+    }
+    
     
     // get today's date in sql-friendly format
     public String getDate() {
