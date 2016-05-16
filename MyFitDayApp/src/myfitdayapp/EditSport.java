@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author olgachristensen
  */
-public class EditFood extends javax.swing.JFrame {
+public class EditSport extends javax.swing.JFrame {
 
     private DBHandler dbh;
     private ResultSet rs;
@@ -26,12 +26,12 @@ public class EditFood extends javax.swing.JFrame {
     private DefaultTableModel dtm;
     
     /**
-     * Creates new form EditFood
+     * Creates new form EditSport
      */
-    public EditFood(String d) {
+    public EditSport(String d) {
         
         dbh = new DBHandler();
-        rs = dbh.getFoodTable(d);
+        rs = dbh.getSportTable(d);
         date = d;
         selectedRow = 0;
         
@@ -43,11 +43,9 @@ public class EditFood extends javax.swing.JFrame {
     }
     
     private void setColWidth() {
-        foodTable.getColumnModel().getColumn(0).setPreferredWidth(120);
-        foodTable.getColumnModel().getColumn(1).setPreferredWidth(40);
-        foodTable.getColumnModel().getColumn(2).setPreferredWidth(40);
-        foodTable.getColumnModel().getColumn(3).setPreferredWidth(40);
-        foodTable.getColumnModel().getColumn(4).setPreferredWidth(40);
+        sportTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+        sportTable.getColumnModel().getColumn(1).setPreferredWidth(40);
+        
     }
 
     /**
@@ -60,7 +58,7 @@ public class EditFood extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        foodTable = new javax.swing.JTable(buildTable(rs)) {
+        sportTable = new javax.swing.JTable(buildTable(rs)) {
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
@@ -68,14 +66,8 @@ public class EditFood extends javax.swing.JFrame {
         btnClose = new javax.swing.JButton();
         nameLable = new javax.swing.JLabel();
         calLable = new javax.swing.JLabel();
-        fatLable = new javax.swing.JLabel();
-        carbLable = new javax.swing.JLabel();
-        proteinLable = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         calField = new javax.swing.JTextField();
-        fatField = new javax.swing.JTextField();
-        carbField = new javax.swing.JTextField();
-        proteinField = new javax.swing.JTextField();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         dateLable = new javax.swing.JLabel();
@@ -85,14 +77,14 @@ public class EditFood extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setResizable(false);
 
-        foodTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
-        foodTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        foodTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        sportTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
+        sportTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        sportTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                foodTableMouseClicked(evt);
+                sportTableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(foodTable);
+        jScrollPane1.setViewportView(sportTable);
 
         btnClose.setText("Close");
         btnClose.addActionListener(new java.awt.event.ActionListener() {
@@ -104,12 +96,6 @@ public class EditFood extends javax.swing.JFrame {
         nameLable.setText("Name:");
 
         calLable.setText("Calories:");
-
-        fatLable.setText("Fat:");
-
-        carbLable.setText("Carbs:");
-
-        proteinLable.setText("Protein:");
 
         btnUpdate.setText("Update");
         btnUpdate.setMaximumSize(new java.awt.Dimension(90, 29));
@@ -136,37 +122,30 @@ public class EditFood extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameLable)
+                    .addComponent(calLable)
+                    .addComponent(dateLable))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(showDateLable)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                        .addComponent(calField)))
+                .addContainerGap(14, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(14, 14, 14)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(nameLable)
-                                .addComponent(calLable)
-                                .addComponent(fatLable)
-                                .addComponent(carbLable)
-                                .addComponent(proteinLable)
-                                .addComponent(dateLable))
-                            .addGap(27, 27, 27)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(showDateLable)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                                    .addComponent(calField)
-                                    .addComponent(fatField)
-                                    .addComponent(carbField)
-                                    .addComponent(proteinField))))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(0, 20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,26 +162,14 @@ public class EditFood extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(calLable)
                     .addComponent(calField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fatLable)
-                    .addComponent(fatField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(carbLable)
-                    .addComponent(carbField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(proteinLable)
-                    .addComponent(proteinField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -215,7 +182,7 @@ public class EditFood extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        //String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
+        //String[] data = {nameField.getText(), calField.getText()};
 
         dtm.removeRow(selectedRow);
         dbh.updateFoodDelete(date, selectedRow);
@@ -223,57 +190,37 @@ public class EditFood extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void foodTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTableMouseClicked
+    private void sportTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sportTableMouseClicked
         
         //int row = foodTable.getSelectedRow();
-        selectedRow = foodTable.getSelectedRow();
+        selectedRow = sportTable.getSelectedRow();
         System.out.println(selectedRow);
         
-        String n = foodTable.getModel().getValueAt(selectedRow, 0).toString();
+        String n = sportTable.getModel().getValueAt(selectedRow, 0).toString();
         nameField.setText(n);
             
-        String cal = foodTable.getModel().getValueAt(selectedRow, 1).toString();
+        String cal = sportTable.getModel().getValueAt(selectedRow, 1).toString();
         calField.setText(cal);
-        
-        String f = foodTable.getModel().getValueAt(selectedRow, 2).toString();
-        fatField.setText(f);
-        
-        String c = foodTable.getModel().getValueAt(selectedRow, 3).toString();
-        carbField.setText(c);
-        
-        String p = foodTable.getModel().getValueAt(selectedRow,4).toString();
-        proteinField.setText(p);
-            
-            
-        
-        
-    }//GEN-LAST:event_foodTableMouseClicked
+     
+    }//GEN-LAST:event_sportTableMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        foodTable.setValueAt(nameField.getText(), selectedRow, 0);
-        foodTable.setValueAt(calField.getText(), selectedRow, 1);
-        foodTable.setValueAt(fatField.getText(), selectedRow, 2);
-        foodTable.setValueAt(carbField.getText(), selectedRow, 3);
-        foodTable.setValueAt(proteinField.getText(), selectedRow, 4);
+        sportTable.setValueAt(nameField.getText(), selectedRow, 0);
+        sportTable.setValueAt(calField.getText(), selectedRow, 1);
         
-        String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
-        //updateDB(nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText());
+        String[] data = {nameField.getText(), calField.getText()};
         
-        dbh.updateFoodEdit(date, selectedRow, data);
+        dbh.updateSportEdit(date, selectedRow, data);
         
         emptyTextBoxes();
-        
-        
-        
+      
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     
     private void emptyTextBoxes() {
         nameField.setText("");
         calField.setText("");
-        fatField.setText("");
-        carbField.setText("");
-        proteinField.setText("");
+        
     }
     
     public DefaultTableModel buildTable(ResultSet rs)  {
@@ -282,9 +229,7 @@ public class EditFood extends javax.swing.JFrame {
         
         columnNames.add("Name");
         columnNames.add("Cal");
-        columnNames.add("F");
-        columnNames.add("C");
-        columnNames.add("P");
+        
         
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
         
@@ -334,14 +279,15 @@ public class EditFood extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -358,17 +304,11 @@ public class EditFood extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdate;
     private javax.swing.JTextField calField;
     private javax.swing.JLabel calLable;
-    private javax.swing.JTextField carbField;
-    private javax.swing.JLabel carbLable;
     private javax.swing.JLabel dateLable;
-    private javax.swing.JTextField fatField;
-    private javax.swing.JLabel fatLable;
-    private javax.swing.JTable foodTable;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLable;
-    private javax.swing.JTextField proteinField;
-    private javax.swing.JLabel proteinLable;
     private javax.swing.JLabel showDateLable;
+    private javax.swing.JTable sportTable;
     // End of variables declaration//GEN-END:variables
 }

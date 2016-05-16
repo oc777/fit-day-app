@@ -69,6 +69,7 @@ public class SetGoal extends javax.swing.JFrame {
         errorMsg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
         setResizable(false);
 
         jLabel1.setText("Goal:");

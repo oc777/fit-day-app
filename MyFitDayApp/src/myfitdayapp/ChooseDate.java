@@ -63,6 +63,7 @@ public class ChooseDate extends javax.swing.JFrame {
         btnToday = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
         setResizable(false);
 
         month.setText("Month:");

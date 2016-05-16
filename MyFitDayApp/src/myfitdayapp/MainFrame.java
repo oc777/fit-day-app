@@ -94,6 +94,7 @@ public class MainFrame extends javax.swing.JFrame {
         textFood = new javax.swing.JTextArea();
         btnDate = new javax.swing.JButton();
         editFood = new javax.swing.JButton();
+        editSport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(230, 230, 230));
@@ -108,7 +109,7 @@ public class MainFrame extends javax.swing.JFrame {
         chart.setLayout(chartLayout);
         chartLayout.setHorizontalGroup(
             chartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 195, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         chartLayout.setVerticalGroup(
             chartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,7 +305,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(fatG)
                             .addComponent(proteinG)
                             .addComponent(carbsG))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         lPanelLayout.setVerticalGroup(
             lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,7 +362,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(proteinN)
                                     .addComponent(proteinG))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(resTotal)
                     .addComponent(txtTotal))
@@ -423,6 +424,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        editSport.setText("...");
+        editSport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editSportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout rPanel1Layout = new javax.swing.GroupLayout(rPanel1);
         rPanel1.setLayout(rPanel1Layout);
         rPanel1Layout.setHorizontalGroup(
@@ -444,7 +452,9 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(45, 45, 45)
                                 .addComponent(lableSport)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(addSport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(addSport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(editSport, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(rPanel1Layout.createSequentialGroup()
                                 .addGap(44, 44, 44)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -470,7 +480,8 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(lableSport)
                     .addComponent(addSport)
                     .addComponent(lableFood)
-                    .addComponent(editFood))
+                    .addComponent(editFood)
+                    .addComponent(editSport))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -484,16 +495,16 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 105, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -715,7 +726,7 @@ public class MainFrame extends javax.swing.JFrame {
         ef.setVisible(true);
         
         
-        // update MainFrame when AddFood frame is closed
+        // update MainFrame when EditFood frame is closed
         ef.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -732,6 +743,27 @@ public class MainFrame extends javax.swing.JFrame {
         });
         
     }//GEN-LAST:event_editFoodActionPerformed
+
+    private void editSportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSportActionPerformed
+        EditSport es = new EditSport(today);
+        
+        es.setLocationRelativeTo(this);
+        es.setVisible(true);
+        
+        // update MainFrame when EditSport frame is closed
+        es.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                sport = dbh.getTodaySport(today);
+                textSport.setText(sport);
+                    
+                setSpentCalories(today);
+                setTotalCalories();
+                setMarginCalories();
+            }
+        });
+        
+    }//GEN-LAST:event_editSportActionPerformed
 
     // set total consumed calories counter
     private void setTakenCalories(String date) {
@@ -819,6 +851,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel carbsTxt;
     private javax.swing.JPanel chart;
     private javax.swing.JButton editFood;
+    private javax.swing.JButton editSport;
     private javax.swing.JPanel fatColor;
     private javax.swing.JLabel fatG;
     private javax.swing.JLabel fatN;

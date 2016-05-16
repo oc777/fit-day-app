@@ -40,6 +40,7 @@ public class DBHandler {
         }
     }
     
+    
     // create number of tables in DB
     public void createTable() {
         try {
@@ -80,6 +81,7 @@ public class DBHandler {
         } catch (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
     // is invoked when an activity entry is made
@@ -89,7 +91,7 @@ public class DBHandler {
             connection.createStatement().execute("insert into sport values('"
                     +date+"','"+name+"',"+cal+")");
             
-            updateTotalsSport(date, cal);
+            updateTotalsSport(date);
             
         } catch (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,6 +133,27 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
          
+        return goal;
+    }
+    
+    // returns last available goal from totals
+    public int latestGoal() {
+        int goal = 0;
+        
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select * from totals"); 
+
+            if (rs.last()) {
+                goal = rs.getInt("goal");
+                
+
+            }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return goal;
     }
     
@@ -188,28 +211,8 @@ public class DBHandler {
         return entries;
     }
     
-    // returns last available goal from totals
-    public int latestGoal() {
-        int goal = 0;
-        
-        try {
-            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("select * from totals"); 
-
-            if (rs.last()) {
-                goal = rs.getInt("goal");
-                
-
-            }
-        
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return goal;
-    }
     
-    // calculate totals for food
+    // calculates totals for food
     public void updateTotalsFood(String date) {
         try {
             Statement st = connection.createStatement();
@@ -242,86 +245,27 @@ public class DBHandler {
     }
     
     
-    // updates totals when new food entry is made (food added)
-    public void updateTotalsFoodAdd(String date, int cal, int f, int c, int p) {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
-            
-            if (rs.next()) {
-            
-                // if it is the first entry for the date
-                if (rs.getString("food") == null)
-                    //st.execute("insert into totals (date, food, fat, carbs, protein) values('"+date+"',"+cal+","+f+","+c+","+p+")");
-                    st.execute("update totals set food="+cal+",fat="+f+",carbs="+c+",protein="+p 
-                            +" where date='" + date + "'");
-
-                // update existing entry
-                else {
-                    int calories = Integer.parseInt(rs.getString("food")) + cal;
-                    int fat = Integer.parseInt(rs.getString("fat")) + f;
-                    int carbs = Integer.parseInt(rs.getString("carbs")) + c;
-                    int protein = Integer.parseInt(rs.getString("protein")) + p;
-
-                    st.execute("update totals set food="+calories+",fat="+fat+",carbs="+carbs+",protein="+protein 
-                            +" where date='" + date + "'");
-
-                }
-            }
+    // calculates totals for sport
+    public void updateTotalsSport(String date) {
         
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
-    // updates totals when a food entry is removed
-    public void updateTotalsFoodDelete (String date, int cal, int f, int c, int p) {
-        try {
+        try{
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
             
-            if (rs.next()) {
+            ResultSet rsFood = st.executeQuery("select * from sport where date='" + date + "'");
             
-                
-                int calories = Integer.parseInt(rs.getString("food")) - cal;
-                int fat = Integer.parseInt(rs.getString("fat")) - f;
-                int carbs = Integer.parseInt(rs.getString("carbs")) - c;
-                int protein = Integer.parseInt(rs.getString("protein")) - p;
-
-                st.execute("update totals set food="+calories+",fat="+fat+",carbs="+carbs+",protein="+protein 
-                            +" where date='" + date + "'");
-
-                
+            int cal = 0;
+            
+            while (rsFood.next()) {
+                cal += Integer.parseInt(rsFood.getString("cal"));
             }
-        
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
-    // updates totals when new sport entry is made
-    public void updateTotalsSport(String date, int cal) {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
             
-            if (rs.next()) {
+            ResultSet rsTotals = st.executeQuery("select * from totals where date='" + date + "'");
             
-                // if it is the first entry for the date
-                if (rs.getString("sport") == null)
-                    st.execute("update totals set sport="+cal+" where date='" + date + "'");
-
-                // update existing entry
-                else {
-                    int calories = Integer.parseInt(rs.getString("sport")) + cal;
-                    
-                    st.execute("update totals set sport="+calories+" where date='" + date + "'");
-
-                }
+            if (rsTotals.next()) {
+                st.execute("update totals set sport="+cal+" where date='" + date + "'");
             }
-        
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -329,7 +273,7 @@ public class DBHandler {
         
     }
     
-    // returns array of Strings with macros data for the date
+    // returns macros for the date in form of strings array
     public String[] getMacros(String date) {
         String[] res = new String[3];
         
@@ -348,12 +292,12 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println(Arrays.toString(res));
+        //System.out.println(Arrays.toString(res));
         
         return res;
     }
     
-    // returns total calorie consumption for the day
+    // returns total calorie consumption for the date
     public String getFoodTotal(String date) {
         String res = "";
         
@@ -370,12 +314,12 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println("Total food " + res);
+        //System.out.println("Total food " + res);
         
         return res;
     }
     
-    // returns total calories spent for the day
+    // returns total calories spent for the date
     public String getSportTotal(String date) {
         String res = "";
         
@@ -392,10 +336,195 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println("Total sport " + res);
+        //System.out.println("Total sport " + res);
         
         return res;
     }
+    
+    
+    // EditFood - result set to build the table 
+    public ResultSet getFoodTable(String date) {
+        ResultSet rs = null;
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
+        } catch  (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        return rs;
+            
+    }
+    
+    
+    // EditFood - update record 
+    public void updateFoodEdit(String date, int index, String[] data) {
+        
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
+            
+            int cal = Integer.parseInt(data[1]);
+            int f = Integer.parseInt(data[2]);
+            int c = Integer.parseInt(data[3]);
+            int p = Integer.parseInt(data[4]);
+            
+            int i = 0;
+            while(rs.next()) {
+                
+                if (i == index) {
+                    rs.updateString("name", data[0]);
+                    rs.updateInt("cal", cal);
+                    rs.updateInt("fat", f);
+                    rs.updateInt("carbs", c);
+                    rs.updateInt("protein", p);
+                    
+                    rs.updateRow();
+                    //System.out.println("updated row");
+                    
+                    break;
+                }
+                i++;
+            }
+            
+            updateTotalsFood(date);
+            
+            macros = getMacros(date);
+        
+        } catch (SQLException e) {
+            System.out.println("Update DB fail: " + e);
+        } catch (NumberFormatException ex) {
+            System.out.println("Int parser err: " + ex);
+        }
+        
+    }
+    
+    // EditFood - delete record
+    public void updateFoodDelete(String date, int index) {
+        
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
+            // select * ???
+            
+            int i = 0;
+            while(rs.next()) {
+                
+                if (i == index) {
+                    rs.deleteRow();
+                    System.out.println("deleted row");
+                    
+                    break;
+                }
+                i++;
+            }
+            
+            updateTotalsFood(date);
+            
+            macros = getMacros(date);
+            
+            
+        } catch (SQLException e) {
+            System.out.println("updateFoodDelete fail " + e);
+        }
+        
+        
+    }
+    
+    // EditSport - result set to build the table 
+    public ResultSet getSportTable(String date) {
+        ResultSet rs = null;
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = st.executeQuery("select name, cal from sport where date='" + date + "'");
+        } catch  (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        return rs;
+            
+    }
+    
+    // EditSport - record update
+    public void updateSportEdit(String date, int index, String[] data){
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select name, cal from sport where date='" + date + "'");
+            
+            int cal = Integer.parseInt(data[1]);
+            
+            int i = 0;
+            while(rs.next()) {
+                
+                if (i == index) {
+                    rs.updateString("name", data[0]);
+                    rs.updateInt("cal", cal);
+                    
+                    rs.updateRow();
+                    
+                    break;
+                }
+                i++;
+            }
+            
+            updateTotalsSport(date);
+            
+            macros = getMacros(date);
+        
+        } catch (SQLException e) {
+            System.out.println("Update DB fail: " + e);
+        } catch (NumberFormatException ex) {
+            System.out.println("Int parser err: " + ex);
+        }
+        
+        
+    }
+    
+    public void updateSportDelete(String date, int index) {
+        
+        try {
+            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("select * from food where date='" + date + "'");
+            
+            int i = 0;
+            while(rs.next()) {
+                
+                if (i == index) {
+                    rs.deleteRow();
+                    System.out.println("deleted row");
+                    
+                    break;
+                }
+                i++;
+            }
+            
+            updateTotalsFood(date);
+            
+            macros = getMacros(date);
+            
+            
+        } catch (SQLException e) {
+            System.out.println("updateFoodDelete fail " + e);
+        }
+        
+        
+    }
+    
+    
+    // get today's date in sql-friendly format
+    public String getDate() {
+        Calendar calendar = new GregorianCalendar();
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        
+        String date = "";
+        date += day +"."+(month+1)+"."+ year;
+        
+        
+        return date;
+    }
+    
     
     // prints everything from food table
     public void printAllFood() {
@@ -441,22 +570,6 @@ public class DBHandler {
         }
        
     }
-    
-    /*
-    // prints alldate specific entries from food table
-    public void printTodayFood(String date) {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from food where date=" + date);
-            while(rs.next())
-                System.out.println("Name: " + rs.getString("name") + ", cal: " 
-                        + rs.getString("cal"));
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    */
     
     // returns a string of all food entries for the date
     // name + calories
@@ -520,111 +633,78 @@ public class DBHandler {
     
 
     
-    public ResultSet getFoodTable(String date) {
-        ResultSet rs = null;
-        try {
-            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
-        } catch  (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-        return rs;
-            
-    }
-    
-    
-    
-    public void updateFoodEdit(String date, int index, String[] data) {
-        
-        try {
-            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
-            
-            int cal = Integer.parseInt(data[1]);
-            int f = Integer.parseInt(data[2]);
-            int c = Integer.parseInt(data[3]);
-            int p = Integer.parseInt(data[4]);
-            
-            int i = 0;
-            while(rs.next()) {
-                
-                if (i == index) {
-                    rs.updateString("name", data[0]);
-                    rs.updateInt("cal", cal);
-                    rs.updateInt("fat", f);
-                    rs.updateInt("carbs", c);
-                    rs.updateInt("protein", p);
-                    
-                    rs.updateRow();
-                    System.out.println("updated row");
-                    
-                    break;
-                }
-                i++;
-            }
-            
-            updateTotalsFood(date);
-            
-            macros = getMacros(date);
-        
-        } catch (SQLException e) {
-            System.out.println("Update DB fail: " + e);
-        } catch (NumberFormatException ex) {
-            System.out.println("Int parser err: " + ex);
-        }
-        
-    }
-    
-    public void updateFoodDelete(String date, int index, String[] data) {
-        int cal = Integer.parseInt(data[1]);
-        int f = Integer.parseInt(data[2]);
-        int c = Integer.parseInt(data[3]);
-        int p = Integer.parseInt(data[4]);
-        
-        try {
-            Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
-            
-            int i = 0;
-            while(rs.next()) {
-                
-                if (i == index) {
-                    rs.deleteRow();
-                    System.out.println("deleted row");
-                    
-                    break;
-                }
-                i++;
-            }
-            
-            updateTotalsFood(date);
-            
-            macros = getMacros(date);
-            
-            
-        } catch (SQLException e) {
-            System.out.println("updateFoodDelete fail " + e);
-        }
-        
-        
-    }
-    
-    
-    // get today's date in sql-friendly format
-    public String getDate() {
-        Calendar calendar = new GregorianCalendar();
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        
-        String date = "";
-        date += day +"."+(month+1)+"."+ year;
-        
-        
-        return date;
-    }
-    
-    
-    
 }
+
+/*
+// updates totals when new food entry is made (food added)
+    public void updateTotalsFoodAdd(String date, int cal, int f, int c, int p) {
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
+            
+            if (rs.next()) {
+            
+                // if it is the first entry for the date
+                if (rs.getString("food") == null)
+                    //st.execute("insert into totals (date, food, fat, carbs, protein) values('"+date+"',"+cal+","+f+","+c+","+p+")");
+                    st.execute("update totals set food="+cal+",fat="+f+",carbs="+c+",protein="+p 
+                            +" where date='" + date + "'");
+
+                // update existing entry
+                else {
+                    int calories = Integer.parseInt(rs.getString("food")) + cal;
+                    int fat = Integer.parseInt(rs.getString("fat")) + f;
+                    int carbs = Integer.parseInt(rs.getString("carbs")) + c;
+                    int protein = Integer.parseInt(rs.getString("protein")) + p;
+
+                    st.execute("update totals set food="+calories+",fat="+fat+",carbs="+carbs+",protein="+protein 
+                            +" where date='" + date + "'");
+
+                }
+            }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    // updates totals when a food entry is removed
+    public void updateTotalsFoodDelete (String date, int cal, int f, int c, int p) {
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
+            
+            if (rs.next()) {
+            
+                
+                int calories = Integer.parseInt(rs.getString("food")) - cal;
+                int fat = Integer.parseInt(rs.getString("fat")) - f;
+                int carbs = Integer.parseInt(rs.getString("carbs")) - c;
+                int protein = Integer.parseInt(rs.getString("protein")) - p;
+
+                st.execute("update totals set food="+calories+",fat="+fat+",carbs="+carbs+",protein="+protein 
+                            +" where date='" + date + "'");
+
+                
+            }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // prints alldate specific entries from food table
+    public void printTodayFood(String date) {
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from food where date=" + date);
+            while(rs.next())
+                System.out.println("Name: " + rs.getString("name") + ", cal: " 
+                        + rs.getString("cal"));
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+*/
