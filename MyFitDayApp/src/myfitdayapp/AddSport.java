@@ -167,7 +167,7 @@ public class AddSport extends javax.swing.JFrame {
 
             dbh.insertDataSport(dbh.getDate(), fName.getText(), cal);
 
-            dbh.printAllSport();
+            //dbh.printAllSport();
             super.dispose();
         } catch (NumberFormatException e) {
             errorMsg.setText("Only integers");

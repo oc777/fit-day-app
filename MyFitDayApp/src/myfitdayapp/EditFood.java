@@ -5,12 +5,15 @@
  */
 package myfitdayapp;
 
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -112,6 +115,7 @@ public class EditFood extends javax.swing.JFrame {
         proteinLable.setText("Protein:");
 
         btnUpdate.setText("Update");
+        btnUpdate.setEnabled(false);
         btnUpdate.setMaximumSize(new java.awt.Dimension(90, 29));
         btnUpdate.setMinimumSize(new java.awt.Dimension(90, 29));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -121,6 +125,7 @@ public class EditFood extends javax.swing.JFrame {
         });
 
         btnDelete.setText("Delete");
+        btnDelete.setEnabled(false);
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -136,37 +141,38 @@ public class EditFood extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(14, 14, 14)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(nameLable)
-                                .addComponent(calLable)
-                                .addComponent(fatLable)
-                                .addComponent(carbLable)
-                                .addComponent(proteinLable)
-                                .addComponent(dateLable))
-                            .addGap(27, 27, 27)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(showDateLable)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                                    .addComponent(calField)
-                                    .addComponent(fatField)
-                                    .addComponent(carbField)
-                                    .addComponent(proteinField))))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(dateLable)
+                        .addGap(54, 54, 54)
+                        .addComponent(showDateLable))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameLable)
+                            .addComponent(calLable)
+                            .addComponent(fatLable)
+                            .addComponent(carbLable)
+                            .addComponent(proteinLable))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nameField)
+                            .addComponent(calField)
+                            .addComponent(fatField)
+                            .addComponent(carbField)
+                            .addComponent(proteinField, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,6 +182,8 @@ public class EditFood extends javax.swing.JFrame {
                     .addComponent(dateLable)
                     .addComponent(showDateLable))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameLable)
                     .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -200,9 +208,7 @@ public class EditFood extends javax.swing.JFrame {
                     .addComponent(btnClose)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDelete))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -225,7 +231,9 @@ public class EditFood extends javax.swing.JFrame {
 
     private void foodTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTableMouseClicked
         
-        //int row = foodTable.getSelectedRow();
+        btnUpdate.setEnabled(true);
+        btnDelete.setEnabled(true);
+        
         selectedRow = foodTable.getSelectedRow();
         System.out.println(selectedRow);
         
@@ -250,19 +258,61 @@ public class EditFood extends javax.swing.JFrame {
     }//GEN-LAST:event_foodTableMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        foodTable.setValueAt(nameField.getText(), selectedRow, 0);
-        foodTable.setValueAt(calField.getText(), selectedRow, 1);
-        foodTable.setValueAt(fatField.getText(), selectedRow, 2);
-        foodTable.setValueAt(carbField.getText(), selectedRow, 3);
-        foodTable.setValueAt(proteinField.getText(), selectedRow, 4);
         
-        String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
-        //updateDB(nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText());
+        Border border = BorderFactory.createLineBorder(Color.RED, 1);
         
-        dbh.updateFoodEdit(date, selectedRow, data);
+        nameField.setBorder(null);
+        calField.setBorder(null);
+        fatField.setBorder(null);
+        carbField.setBorder(null);
+        proteinField.setBorder(null);
         
-        emptyTextBoxes();
+        try {
+            if (nameField.getText().length() != 0 && nameField.getText().length() <= 20) {
         
+                foodTable.setValueAt(nameField.getText(), selectedRow, 0);
+                foodTable.setValueAt(calField.getText(), selectedRow, 1);
+                foodTable.setValueAt(fatField.getText(), selectedRow, 2);
+                foodTable.setValueAt(carbField.getText(), selectedRow, 3);
+                foodTable.setValueAt(proteinField.getText(), selectedRow, 4);
+
+                String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
+                //updateDB(nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText());
+
+                dbh.updateFoodEdit(date, selectedRow, data);
+
+                emptyTextBoxes();
+            }
+            else
+                nameField.setBorder(border);
+        
+        }
+        catch (NumberFormatException e) {
+            
+            try {
+                int cal = Integer.parseInt(calField.getText());
+            } catch (NumberFormatException ex) {
+                calField.setBorder(border);
+            }
+            
+            try {
+                int f = Integer.parseInt(fatField.getText());
+            } catch (NumberFormatException ex) {
+                fatField.setBorder(border);
+            }
+            
+            try {
+                int carb = Integer.parseInt(carbField.getText());
+            } catch (NumberFormatException ex) {
+                carbField.setBorder(border);
+            }
+            
+            try {
+                int p = Integer.parseInt(proteinField.getText());
+            } catch (NumberFormatException ex) {
+                proteinField.setBorder(border);
+            }
+        }
         
         
     }//GEN-LAST:event_btnUpdateActionPerformed

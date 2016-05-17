@@ -251,12 +251,12 @@ public class DBHandler {
         try{
             Statement st = connection.createStatement();
             
-            ResultSet rsFood = st.executeQuery("select * from sport where date='" + date + "'");
+            ResultSet rsSport = st.executeQuery("select * from sport where date='" + date + "'");
             
             int cal = 0;
             
-            while (rsFood.next()) {
-                cal += Integer.parseInt(rsFood.getString("cal"));
+            while (rsSport.next()) {
+                cal += Integer.parseInt(rsSport.getString("cal"));
             }
             
             ResultSet rsTotals = st.executeQuery("select * from totals where date='" + date + "'");
@@ -393,9 +393,7 @@ public class DBHandler {
         
         } catch (SQLException e) {
             System.out.println("Update DB fail: " + e);
-        } catch (NumberFormatException ex) {
-            System.out.println("Int parser err: " + ex);
-        }
+        } 
         
     }
     
@@ -404,15 +402,15 @@ public class DBHandler {
         
         try {
             Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("select name, cal, fat, carbs, protein from food where date='" + date + "'");
-            // select * ???
+            ResultSet rs = st.executeQuery("select * from food where date='" + date + "'");
+            // select name, cal, fat, carbs, protein ???
             
             int i = 0;
             while(rs.next()) {
                 
                 if (i == index) {
                     rs.deleteRow();
-                    System.out.println("deleted row");
+                    //System.out.println("deleted row");
                     
                     break;
                 }
@@ -445,11 +443,11 @@ public class DBHandler {
             
     }
     
-    // EditSport - record update
-    public void updateSportEdit(String date, int index, String[] data){
+    // EditSport - update record 
+    public void updateSportEdit(String date, int index, String[] data) {
         try {
             Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("select name, cal from sport where date='" + date + "'");
+            ResultSet rs = st.executeQuery("select * from sport where date='" + date + "'");
             
             int cal = Integer.parseInt(data[1]);
             
@@ -469,22 +467,25 @@ public class DBHandler {
             
             updateTotalsSport(date);
             
-            macros = getMacros(date);
+            //macros = getMacros(date);
         
         } catch (SQLException e) {
             System.out.println("Update DB fail: " + e);
-        } catch (NumberFormatException ex) {
+        } 
+        /*
+        catch (NumberFormatException ex) {
             System.out.println("Int parser err: " + ex);
         }
-        
+        */
         
     }
     
+    // EditSport - delete record
     public void updateSportDelete(String date, int index) {
         
         try {
             Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("select * from food where date='" + date + "'");
+            ResultSet rs = st.executeQuery("select * from sport where date='" + date + "'");
             
             int i = 0;
             while(rs.next()) {
@@ -498,13 +499,13 @@ public class DBHandler {
                 i++;
             }
             
-            updateTotalsFood(date);
+            updateTotalsSport(date);
             
-            macros = getMacros(date);
+            //macros = getMacros(date);
             
             
         } catch (SQLException e) {
-            System.out.println("updateFoodDelete fail " + e);
+            System.out.println("updateSportDelete fail " + e);
         }
         
         
