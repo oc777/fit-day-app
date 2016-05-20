@@ -2,6 +2,9 @@
 package myfitdayapp;
 
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
@@ -21,6 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
     private String food;
     private String sport;
     private int goal;
+    private int total; 
     private PieChart pChart;
     private String[] macros;
     private String today;
@@ -88,12 +92,23 @@ public class MainFrame extends javax.swing.JFrame {
         addSport = new javax.swing.JButton();
         editSport = new javax.swing.JButton();
         txtDate = new javax.swing.JLabel();
+        statusPanel = new javax.swing.JPanel() {
+
+            @Override
+            public void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+                draw(g);
+            }
+
+        };
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(230, 230, 230));
         setResizable(false);
 
         lPanel.setBackground(java.awt.Color.darkGray);
+        lPanel.setPreferredSize(new java.awt.Dimension(320, 736));
 
         chart.setBackground(new java.awt.Color(153, 153, 153));
         chart.setPreferredSize(new java.awt.Dimension(195, 195));
@@ -285,12 +300,25 @@ public class MainFrame extends javax.swing.JFrame {
         txtDate.setForeground(new java.awt.Color(255, 255, 255));
         txtDate.setText("Date:");
 
+        statusPanel.setBackground(new java.awt.Color(255, 255, 51));
+
+        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
+        statusPanel.setLayout(statusPanelLayout);
+        statusPanelLayout.setHorizontalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 286, Short.MAX_VALUE)
+        );
+        statusPanelLayout.setVerticalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout lPanelLayout = new javax.swing.GroupLayout(lPanel);
         lPanel.setLayout(lPanelLayout);
         lPanelLayout.setHorizontalGroup(
             lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                .addGap(0, 72, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -360,7 +388,10 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(fatG)
                             .addComponent(proteinG)
                             .addComponent(carbsG))
-                        .addGap(29, 29, 29)))
+                        .addGap(29, 29, 29))
+                    .addGroup(lPanelLayout.createSequentialGroup()
+                        .addContainerGap(18, Short.MAX_VALUE)
+                        .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15))
         );
         lPanelLayout.setVerticalGroup(
@@ -422,7 +453,9 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(proteinN)
                             .addComponent(proteinG))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTotal)
                     .addComponent(resTotal))
@@ -437,7 +470,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,13 +480,39 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    
+    private void draw(Graphics g) {
+        Graphics2D box = (Graphics2D) g;
+        
+        
+          System.out.println("Positive");   
+        
+            
+            
+        // green
+        
+        box.setColor(new Color(58, 222, 69));
+        
+        box.fillRect(0, 0, 100, 45);
+            
+        
+        // light grey
+        
+        box.setColor(new Color(212, 212, 212));
+        
+        box.fillRect(100, 0, 70 + 100, 45);
+    }
+    
     // set value to lable goal
     private void setGoal() {
         
         // if the goal for today was already set
         if (dbh.checkTotals(today)) {
-            //resGoal.setText("" + goal);
-            resGoal.setText(dbh.getGoal(today));
+            goal = Integer.parseInt(dbh.getGoal(today));
+            resGoal.setText("" + goal);
+            //resGoal.setText(dbh.getGoal(today));
         }
             
         
@@ -725,9 +784,9 @@ public class MainFrame extends javax.swing.JFrame {
         //if (dbh.checkSport(today)) {
             int foodCal = Integer.parseInt(resConsumed.getText());
             int sportCal = Integer.parseInt(resSpent.getText());
-            int totalCal = foodCal - sportCal;
+            total = foodCal - sportCal;
 
-            resTotal.setText("" + totalCal);
+            resTotal.setText("" + total);
         //} else
         //    resTotal.setText("0");
     }
@@ -806,6 +865,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel resMargin;
     private javax.swing.JLabel resSpent;
     private javax.swing.JLabel resTotal;
+    private javax.swing.JPanel statusPanel;
     private javax.swing.JLabel txtConsumed;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtGoal;
