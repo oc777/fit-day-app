@@ -3,6 +3,7 @@ package myfitdayapp;
 
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -16,14 +17,15 @@ import javax.swing.event.DocumentListener;
  * 
  * @author olgachristensen
  */
-public class AddFood extends javax.swing.JFrame {
+public class AddFood extends javax.swing.JDialog {
 
     private DBHandler dbh;
     /**
      * Creates new form AddFood
      * @throws java.lang.Exception
      */
-    public AddFood() throws Exception {
+    public AddFood(JFrame parent, boolean modal ) throws Exception {
+        super(parent, modal);
         setUndecorated(true);
         initComponents();
         dbh = new DBHandler();

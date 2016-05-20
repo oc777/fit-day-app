@@ -5,11 +5,13 @@
  */
 package myfitdayapp;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author olgachristensen
  */
-public class ChooseDate extends javax.swing.JFrame {
+public class ChooseDate extends javax.swing.JDialog {
     
     private DBHandler dbh;
     public String date;
@@ -17,7 +19,8 @@ public class ChooseDate extends javax.swing.JFrame {
     /**
      * Creates new form SetGoalD
      */
-    public ChooseDate(String d) {
+    public ChooseDate(String d, JFrame parent, boolean modal) {
+        super(parent, modal);
         setUndecorated(true);
         initComponents();
         dbh = new DBHandler();

@@ -3,6 +3,7 @@ package myfitdayapp;
 
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -15,13 +16,14 @@ import javax.swing.event.DocumentListener;
  * 
  * @author olgachristensen
  */
-public class AddSport extends javax.swing.JFrame {
+public class AddSport extends javax.swing.JDialog {
 
     private DBHandler dbh;
     /**
      * Creates new form AddSport
      */
-    public AddSport() {
+    public AddSport(JFrame parent, boolean modal) {
+        super(parent, modal);
         setUndecorated(true);
         
         initComponents();
@@ -213,7 +215,7 @@ public class AddSport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddSport().setVisible(true);
+                //new AddSport().setVisible(true);
             }
         });
     }

@@ -36,7 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         addChart();
         setDate();
-        updatePanels();
+        //updatePanels();
         setGoal();
         setTakenCalories(today);
         setSpentCalories(today);
@@ -81,20 +81,13 @@ public class MainFrame extends javax.swing.JFrame {
         fatG = new javax.swing.JLabel();
         carbsG = new javax.swing.JLabel();
         proteinG = new javax.swing.JLabel();
-        rPanel1 = new javax.swing.JPanel();
-        txtDate = new javax.swing.JLabel();
-        lableFood = new javax.swing.JLabel();
         resDate = new javax.swing.JLabel();
-        addFood = new javax.swing.JButton();
-        lableSport = new javax.swing.JLabel();
-        addSport = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        textSport = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        textFood = new javax.swing.JTextArea();
         btnDate = new javax.swing.JButton();
+        addFood = new javax.swing.JButton();
         editFood = new javax.swing.JButton();
+        addSport = new javax.swing.JButton();
         editSport = new javax.swing.JButton();
+        txtDate = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(230, 230, 230));
@@ -109,7 +102,7 @@ public class MainFrame extends javax.swing.JFrame {
         chart.setLayout(chartLayout);
         chartLayout.setHorizontalGroup(
             chartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 195, Short.MAX_VALUE)
         );
         chartLayout.setVerticalGroup(
             chartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,7 +132,6 @@ public class MainFrame extends javax.swing.JFrame {
         resGoal.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
         resGoal.setForeground(new java.awt.Color(255, 153, 0));
         resGoal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        resGoal.setText("" + dbh.latestGoal());
         resGoal.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         resTotal.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
@@ -250,38 +242,101 @@ public class MainFrame extends javax.swing.JFrame {
         proteinG.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         proteinG.setText("g");
 
+        resDate.setFont(new java.awt.Font("Helvetica Neue", 1, 20)); // NOI18N
+        resDate.setForeground(new java.awt.Color(255, 153, 0));
+        resDate.setText("5 May 2016");
+
+        btnDate.setText("...");
+        btnDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDateActionPerformed(evt);
+            }
+        });
+
+        addFood.setText("+");
+        addFood.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addFoodActionPerformed(evt);
+            }
+        });
+
+        editFood.setText("...");
+        editFood.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editFoodActionPerformed(evt);
+            }
+        });
+
+        addSport.setText("+");
+        addSport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSportActionPerformed(evt);
+            }
+        });
+
+        editSport.setText("...");
+        editSport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editSportActionPerformed(evt);
+            }
+        });
+
+        txtDate.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        txtDate.setForeground(new java.awt.Color(255, 255, 255));
+        txtDate.setText("Date:");
+
         javax.swing.GroupLayout lPanelLayout = new javax.swing.GroupLayout(lPanel);
         lPanel.setLayout(lPanelLayout);
         lPanelLayout.setHorizontalGroup(
             lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                .addGap(0, 72, Short.MAX_VALUE)
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(lPanelLayout.createSequentialGroup()
-                            .addComponent(txtMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(resMargin, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                            .addComponent(txtGoal)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                            .addComponent(btnSetGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
-                            .addComponent(resGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(resTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                            .addComponent(txtConsumed)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(resConsumed, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                            .addComponent(txtSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(resSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(resTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resMargin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(85, 85, 85))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(lPanelLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(lPanelLayout.createSequentialGroup()
+                                        .addComponent(txtDate)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(resDate))
+                                    .addGroup(lPanelLayout.createSequentialGroup()
+                                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
+                                                .addComponent(txtGoal)
+                                                .addGap(19, 19, 19))
+                                            .addComponent(txtConsumed)
+                                            .addComponent(txtSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(resConsumed, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(resSpent, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(resGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(30, 30, 30)
+                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(addFood, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(addSport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnSetGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 41, Short.MAX_VALUE)
+                            .addComponent(editFood, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(editSport, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(btnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(lPanelLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
                         .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(lPanelLayout.createSequentialGroup()
                                 .addComponent(proteinColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,7 +350,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(fatColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(fatTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(24, 24, 24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(proteinN, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(carbsN, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -304,35 +359,47 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(fatG)
                             .addComponent(proteinG)
-                            .addComponent(carbsG))))
-                .addContainerGap(96, Short.MAX_VALUE))
+                            .addComponent(carbsG))
+                        .addGap(29, 29, 29)))
+                .addGap(15, 15, 15))
         );
         lPanelLayout.setVerticalGroup(
             lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lPanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resGoal)
-                    .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnSetGoal)))
-                .addGap(12, 12, 12)
-                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resSpent)
-                    .addGroup(lPanelLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(txtSpent)))
+                .addGap(22, 22, 22)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(lPanelLayout.createSequentialGroup()
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(resDate)
+                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resGoal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSetGoal)))
                         .addGap(12, 12, 12)
-                        .addComponent(resConsumed))
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSpent)
+                            .addComponent(resSpent)
+                            .addComponent(addSport)
+                            .addComponent(editSport))
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(lPanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(resConsumed))
+                            .addGroup(lPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtConsumed)
+                                    .addComponent(addFood)
+                                    .addComponent(editFood)))))
+                    .addComponent(btnDate))
+                .addGap(39, 39, 39)
+                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(lPanelLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(txtConsumed)))
-                .addGap(28, 28, 28)
-                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(lPanelLayout.createSequentialGroup()
-                        .addGap(204, 204, 204)
                         .addComponent(fatTxt)
                         .addGap(18, 18, 18)
                         .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,169 +409,39 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(proteinColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(proteinTxt)))
+                    .addComponent(fatColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(lPanelLayout.createSequentialGroup()
-                        .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(lPanelLayout.createSequentialGroup()
-                                .addComponent(fatColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(fatN)
-                                    .addComponent(fatG))
-                                .addGap(18, 18, 18)
-                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(carbsN)
-                                    .addComponent(carbsG))
-                                .addGap(18, 18, 18)
-                                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(proteinN)
-                                    .addComponent(proteinG))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
-                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resTotal)
-                    .addComponent(txtTotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fatN)
+                            .addComponent(fatG))
+                        .addGap(18, 18, 18)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(carbsN)
+                            .addComponent(carbsG))
+                        .addGap(18, 18, 18)
+                        .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(proteinN)
+                            .addComponent(proteinG))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTotal)
+                    .addComponent(resTotal))
+                .addGap(8, 8, 8)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMargin)
                     .addComponent(resMargin))
                 .addContainerGap())
         );
 
-        txtDate.setText("Date:");
-
-        lableFood.setText("FOOD");
-
-        resDate.setText("5 May 2016");
-
-        addFood.setText("+");
-        addFood.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addFoodActionPerformed(evt);
-            }
-        });
-
-        lableSport.setText("SPORT");
-
-        addSport.setText("+");
-        addSport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addSportActionPerformed(evt);
-            }
-        });
-
-        jScrollPane4.setBorder(null);
-
-        textSport.setBackground(new java.awt.Color(238, 238, 238));
-        textSport.setColumns(20);
-        textSport.setRows(5);
-        jScrollPane4.setViewportView(textSport);
-
-        jScrollPane3.setBorder(null);
-
-        textFood.setBackground(new java.awt.Color(238, 238, 238));
-        textFood.setColumns(20);
-        textFood.setRows(5);
-        textFood.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jScrollPane3.setViewportView(textFood);
-
-        btnDate.setText("date");
-        btnDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDateActionPerformed(evt);
-            }
-        });
-
-        editFood.setText("...");
-        editFood.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editFoodActionPerformed(evt);
-            }
-        });
-
-        editSport.setText("...");
-        editSport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editSportActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout rPanel1Layout = new javax.swing.GroupLayout(rPanel1);
-        rPanel1.setLayout(rPanel1Layout);
-        rPanel1Layout.setHorizontalGroup(
-            rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(rPanel1Layout.createSequentialGroup()
-                        .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(rPanel1Layout.createSequentialGroup()
-                                .addComponent(lableFood)
-                                .addGap(18, 18, 18)
-                                .addComponent(addFood, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(editFood, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(rPanel1Layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(lableSport)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(addSport, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(editSport, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(rPanel1Layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(rPanel1Layout.createSequentialGroup()
-                        .addComponent(txtDate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(resDate)
-                        .addGap(42, 42, 42)
-                        .addComponent(btnDate)))
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-        rPanel1Layout.setVerticalGroup(
-            rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(rPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDate)
-                    .addComponent(resDate)
-                    .addComponent(btnDate))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addFood)
-                    .addComponent(lableSport)
-                    .addComponent(addSport)
-                    .addComponent(lableFood)
-                    .addComponent(editFood)
-                    .addComponent(editSport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(rPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(121, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(lPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(rPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -579,6 +516,7 @@ public class MainFrame extends javax.swing.JFrame {
         resDate.setText(today);
     }
     
+    /*
     // update food and sport text fields
     private void updatePanels() {
         if (dbh.checkFood(today)) {
@@ -595,6 +533,7 @@ public class MainFrame extends javax.swing.JFrame {
         else
             textSport.setText("");
     }
+    */
     
     // get todays date
     public String getDate() {
@@ -616,7 +555,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void addFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFoodActionPerformed
         AddFood af;
         try {
-            af = new AddFood();
+            af = new AddFood(this, true);
             af.setLocationRelativeTo(this);
             af.setVisible(true);
             
@@ -625,7 +564,7 @@ public class MainFrame extends javax.swing.JFrame {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     food = dbh.getTodayFood(today);
-                    textFood.setText(food);
+                    //textFood.setText(food);
                     macros = dbh.getMacros(today);
                     
                     updateChart();
@@ -648,7 +587,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void addSportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSportActionPerformed
         AddSport as;
         try {
-            as = new AddSport();
+            as = new AddSport(this, true);
             as.setLocationRelativeTo(this);
             as.setVisible(true);
             
@@ -658,7 +597,7 @@ public class MainFrame extends javax.swing.JFrame {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     sport = dbh.getTodaySport(today);
-                    textSport.setText(sport);
+                    //textSport.setText(sport);
                     
                     setSpentCalories(today);
                     setTotalCalories();
@@ -674,7 +613,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // CLICKED set goal
     private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
-        SetGoal sg = new SetGoal();
+        SetGoal sg = new SetGoal(this, true);
         sg.setLocationRelativeTo(this);
         sg.setVisible(true);
         
@@ -693,7 +632,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSetGoalActionPerformed
 
     private void btnDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateActionPerformed
-        ChooseDate cd = new ChooseDate(today);
+        ChooseDate cd = new ChooseDate(today, this, true);
         cd.setLocationRelativeTo(this);
         cd.setVisible(true);
         
@@ -707,7 +646,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setDate();
                 updateChart();
                 
-                updatePanels();
+                //updatePanels();
                 setGoal();
                 setTakenCalories(today);
                 setSpentCalories(today);
@@ -720,7 +659,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDateActionPerformed
 
     private void editFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editFoodActionPerformed
-        EditFood ef = new EditFood(today);
+        EditFood ef = new EditFood(today, this, true);
         
         ef.setLocationRelativeTo(this);
         ef.setVisible(true);
@@ -731,7 +670,7 @@ public class MainFrame extends javax.swing.JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 food = dbh.getTodayFood(today);
-                textFood.setText(food);
+                //textFood.setText(food);
                 macros = dbh.getMacros(today);
                     
                 updateChart();
@@ -745,7 +684,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_editFoodActionPerformed
 
     private void editSportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSportActionPerformed
-        EditSport es = new EditSport(today);
+        EditSport es = new EditSport(today, this, true);
         
         es.setLocationRelativeTo(this);
         es.setVisible(true);
@@ -755,7 +694,7 @@ public class MainFrame extends javax.swing.JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 sport = dbh.getTodaySport(today);
-                textSport.setText(sport);
+                //textSport.setText(sport);
                     
                 setSpentCalories(today);
                 setTotalCalories();
@@ -856,24 +795,17 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel fatG;
     private javax.swing.JLabel fatN;
     private javax.swing.JLabel fatTxt;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPanel lPanel;
-    private javax.swing.JLabel lableFood;
-    private javax.swing.JLabel lableSport;
     private javax.swing.JPanel proteinColor;
     private javax.swing.JLabel proteinG;
     private javax.swing.JLabel proteinN;
     private javax.swing.JLabel proteinTxt;
-    private javax.swing.JPanel rPanel1;
     private javax.swing.JLabel resConsumed;
     private javax.swing.JLabel resDate;
     private javax.swing.JLabel resGoal;
     private javax.swing.JLabel resMargin;
     private javax.swing.JLabel resSpent;
     private javax.swing.JLabel resTotal;
-    private javax.swing.JTextArea textFood;
-    private javax.swing.JTextArea textSport;
     private javax.swing.JLabel txtConsumed;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtGoal;
