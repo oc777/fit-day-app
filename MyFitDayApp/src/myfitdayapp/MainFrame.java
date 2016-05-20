@@ -29,12 +29,17 @@ public class MainFrame extends javax.swing.JFrame {
     private String[] macros;
     private String today;
     
+    private int width;
+    private int width1;
+    private int width2;
+    
     
     public MainFrame() {
         dbh = new DBHandler();
         //today = getDate();
         today = dbh.getDate();
         macros = dbh.getMacros(today);
+        width = 286;
         
         initComponents();
         
@@ -48,7 +53,6 @@ public class MainFrame extends javax.swing.JFrame {
         setMarginCalories();
         setMacros();
         
-        //dbh.printAllTotals();
     }
 
     /**
@@ -98,7 +102,7 @@ public class MainFrame extends javax.swing.JFrame {
             public void paintComponent(Graphics g) {
 
                 super.paintComponent(g);
-                draw(g);
+                drawStatusBar(g);
             }
 
         };
@@ -300,7 +304,8 @@ public class MainFrame extends javax.swing.JFrame {
         txtDate.setForeground(new java.awt.Color(255, 255, 255));
         txtDate.setText("Date:");
 
-        statusPanel.setBackground(new java.awt.Color(255, 255, 51));
+        statusPanel.setBackground(new java.awt.Color(212, 212, 212));
+        statusPanel.setPreferredSize(new java.awt.Dimension(286, 40));
 
         javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
         statusPanel.setLayout(statusPanelLayout);
@@ -310,7 +315,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         statusPanelLayout.setVerticalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGap(0, 40, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout lPanelLayout = new javax.swing.GroupLayout(lPanel);
@@ -453,7 +458,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(proteinN)
                             .addComponent(proteinG))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addGroup(lPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -481,29 +486,6 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    
-    
-    private void draw(Graphics g) {
-        Graphics2D box = (Graphics2D) g;
-        
-        
-          System.out.println("Positive");   
-        
-            
-            
-        // green
-        
-        box.setColor(new Color(58, 222, 69));
-        
-        box.fillRect(0, 0, 100, 45);
-            
-        
-        // light grey
-        
-        box.setColor(new Color(212, 212, 212));
-        
-        box.fillRect(100, 0, 70 + 100, 45);
-    }
     
     // set value to lable goal
     private void setGoal() {
@@ -575,24 +557,6 @@ public class MainFrame extends javax.swing.JFrame {
         resDate.setText(today);
     }
     
-    /*
-    // update food and sport text fields
-    private void updatePanels() {
-        if (dbh.checkFood(today)) {
-            food = dbh.getTodayFood(today);
-            textFood.setText(food);
-        }
-        else
-            textFood.setText("");
-        
-        if (dbh.checkSport(today)) {
-            sport = dbh.getTodaySport(today);
-            textSport.setText(sport);
-        }
-        else
-            textSport.setText("");
-    }
-    */
     
     // get todays date
     public String getDate() {
@@ -608,6 +572,56 @@ public class MainFrame extends javax.swing.JFrame {
         
         return date;
         
+    }
+    
+    
+    // get the status bar
+    private void drawStatusBar(Graphics g) {
+        Graphics2D box = (Graphics2D) g;
+           
+        if (goal - total > 0) {
+            
+            System.out.println("Positive");
+            getWidthPositive();
+            
+            // green
+            box.setColor(new Color(58, 222, 69));
+            box.fillRect(0, 0, width1, 40);
+            
+            // light grey
+            box.setColor(new Color(212, 212, 212));
+            box.fillRect(width1, 0, width2, 40);
+            
+            
+            
+        } else {
+            System.out.println("Negative");
+            
+            getWidthNegative();
+            // green
+            box.setColor(new Color(58, 222, 69));
+            box.fillRect(0, 0, width1, 40);
+            
+            // red
+            box.setColor(new Color(245, 56, 56));
+            box.fillRect(width1, 0, width2, 40);
+            
+            
+        }
+        
+    }
+    
+    private void getWidthPositive() {
+        float x = width * (float)total / (float)goal;
+        width1 = (int) x;
+        width2 = width - width1;
+    }
+    
+    
+    private void getWidthNegative() {
+        float x = width * ((float)total / (float)goal - 1);
+        width2 = (int) x;
+        width1 = width - width2;
     }
     
     // CLICKED add food
@@ -631,6 +645,7 @@ public class MainFrame extends javax.swing.JFrame {
                     setTotalCalories();
                     setMarginCalories();
                     setMacros();
+                    statusPanel.repaint();
                 }
             });
             
@@ -661,6 +676,7 @@ public class MainFrame extends javax.swing.JFrame {
                     setSpentCalories(today);
                     setTotalCalories();
                     setMarginCalories();
+                    statusPanel.repaint();
                 }
             });
         } catch (Exception ex) {
@@ -685,6 +701,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setGoal();
                 setMarginCalories();
                 //dbh.printAllTotals(); 
+                statusPanel.repaint();
             }
         });
         
@@ -712,6 +729,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setTotalCalories();
                 setMarginCalories();
                 setMacros();
+                statusPanel.repaint();
 
             }
         });
@@ -737,6 +755,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setTotalCalories();
                 setMarginCalories();
                 setMacros();
+                statusPanel.repaint();
             }
         });
         
@@ -758,6 +777,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setSpentCalories(today);
                 setTotalCalories();
                 setMarginCalories();
+                statusPanel.repaint();
             }
         });
         
@@ -874,3 +894,23 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel txtTotal;
     // End of variables declaration//GEN-END:variables
 }
+
+
+    /*
+    // update food and sport text fields
+    private void updatePanels() {
+        if (dbh.checkFood(today)) {
+            food = dbh.getTodayFood(today);
+            textFood.setText(food);
+        }
+        else
+            textFood.setText("");
+        
+        if (dbh.checkSport(today)) {
+            sport = dbh.getTodaySport(today);
+            textSport.setText(sport);
+        }
+        else
+            textSport.setText("");
+    }
+    */
