@@ -44,6 +44,8 @@ public class ChooseDate extends javax.swing.JDialog {
         
     }
     
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -210,7 +212,7 @@ public class ChooseDate extends javax.swing.JDialog {
 				isDate = false;
 		
 		return isDate;	
-	}
+    }
     
     private static int getMonth(String str) {
         int result = 0;

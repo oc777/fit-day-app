@@ -82,7 +82,6 @@ public class AddFood extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
         setName("Add Food"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(240, 430));
         setResizable(false);
 
         lName.setText("Name:");
@@ -98,30 +97,6 @@ public class AddFood extends javax.swing.JDialog {
         fName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 fNameKeyTyped(evt);
-            }
-        });
-
-        fCal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fCalActionPerformed(evt);
-            }
-        });
-
-        fFat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fFatActionPerformed(evt);
-            }
-        });
-
-        fCarbs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fCarbsActionPerformed(evt);
-            }
-        });
-
-        fProtein.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fProteinActionPerformed(evt);
             }
         });
 
@@ -202,22 +177,6 @@ public class AddFood extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void fCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fCalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fCalActionPerformed
-
-    private void fFatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fFatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fFatActionPerformed
-
-    private void fCarbsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fCarbsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fCarbsActionPerformed
-
-    private void fProteinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fProteinActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fProteinActionPerformed
 
     // if clicked CANCEL - close the frame 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

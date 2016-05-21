@@ -148,6 +148,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="nameField">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nameFieldKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="calField">
     </Component>

@@ -116,6 +116,12 @@ public class EditFood extends javax.swing.JDialog {
 
         proteinLable.setText("Protein:");
 
+        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nameFieldKeyTyped(evt);
+            }
+        });
+
         btnUpdate.setText("Update");
         btnUpdate.setEnabled(false);
         btnUpdate.setMaximumSize(new java.awt.Dimension(90, 29));
@@ -238,7 +244,7 @@ public class EditFood extends javax.swing.JDialog {
         btnDelete.setEnabled(true);
         
         selectedRow = foodTable.getSelectedRow();
-        System.out.println(selectedRow);
+        //System.out.println(selectedRow);
         
         String n = foodTable.getModel().getValueAt(selectedRow, 0).toString();
         nameField.setText(n);
@@ -285,6 +291,7 @@ public class EditFood extends javax.swing.JDialog {
                 dbh.updateFoodEdit(date, selectedRow, data);
 
                 emptyTextBoxes();
+                disableButtons();
             }
             else
                 nameField.setBorder(border);
@@ -320,6 +327,12 @@ public class EditFood extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void nameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyTyped
+        // limits the text input to 20 chars
+        if (nameField.getText().length() >= 20)
+            evt.consume();
+    }//GEN-LAST:event_nameFieldKeyTyped
+
     
     private void emptyTextBoxes() {
         nameField.setText("");
@@ -327,6 +340,11 @@ public class EditFood extends javax.swing.JDialog {
         fatField.setText("");
         carbField.setText("");
         proteinField.setText("");
+    }
+    
+    private void disableButtons() {
+        btnDelete.setEnabled(false);
+        btnUpdate.setEnabled(false);
     }
     
     public DefaultTableModel buildTable(ResultSet rs)  {

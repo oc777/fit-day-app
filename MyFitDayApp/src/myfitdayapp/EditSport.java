@@ -103,6 +103,12 @@ public class EditSport extends javax.swing.JDialog {
 
         calLable.setText("Calories:");
 
+        nameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nameFieldKeyTyped(evt);
+            }
+        });
+
         btnUpdate.setText("Update");
         btnUpdate.setEnabled(false);
         btnUpdate.setMaximumSize(new java.awt.Dimension(90, 29));
@@ -209,7 +215,7 @@ public class EditSport extends javax.swing.JDialog {
         btnDelete.setEnabled(true);
         
         selectedRow = sportTable.getSelectedRow();
-        System.out.println(selectedRow);
+        //System.out.println(selectedRow);
         
         String n = sportTable.getModel().getValueAt(selectedRow, 0).toString();
         nameField.setText(n);
@@ -239,6 +245,7 @@ public class EditSport extends javax.swing.JDialog {
                     dbh.updateSportEdit(date, selectedRow, data);
 
                     emptyTextBoxes();
+                    disableButtons();
 
                 }
             else
@@ -252,12 +259,24 @@ public class EditSport extends javax.swing.JDialog {
       
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void nameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyTyped
+        // limits the text input to 20 chars
+        if (nameField.getText().length() >= 20)
+            evt.consume();
+    }//GEN-LAST:event_nameFieldKeyTyped
+
     
     private void emptyTextBoxes() {
         nameField.setText("");
         calField.setText("");
         
     }
+    
+    private void disableButtons() {
+        btnDelete.setEnabled(false);
+        btnUpdate.setEnabled(false);
+    }
+    
     
     public DefaultTableModel buildTable(ResultSet rs)  {
         

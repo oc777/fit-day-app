@@ -513,7 +513,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             pChart = new PieChart();
             
-        // macros available     
+        // macros available - fill the chart     
         } else {
             int fat = Integer.parseInt(macros[0]);
             int carbs = Integer.parseInt(macros[1]);
@@ -536,12 +536,14 @@ public class MainFrame extends javax.swing.JFrame {
         chart.repaint();
     }
     
+    // show macros in text form
     private void setMacros() {
         if (macros[0] != null) {
             fatN.setText(macros[0]);
             carbsN.setText(macros[1]);
             proteinN.setText(macros[2]);
         }
+        // no records made on the chosen date
         else {
             fatN.setText("0");
             carbsN.setText("0");
@@ -578,10 +580,9 @@ public class MainFrame extends javax.swing.JFrame {
     // get the status bar
     private void drawStatusBar(Graphics g) {
         Graphics2D box = (Graphics2D) g;
-           
+        
         if (goal - total > 0) {
             
-            System.out.println("Positive");
             getWidthPositive();
             
             // green
@@ -595,7 +596,6 @@ public class MainFrame extends javax.swing.JFrame {
             
             
         } else {
-            System.out.println("Negative");
             
             getWidthNegative();
             // green
@@ -611,13 +611,14 @@ public class MainFrame extends javax.swing.JFrame {
         
     }
     
+    // width of status bar - goal > total
     private void getWidthPositive() {
         float x = width * (float)total / (float)goal;
         width1 = (int) x;
         width2 = width - width1;
     }
     
-    
+    // width of status bar - goal < total
     private void getWidthNegative() {
         float x = width * ((float)total / (float)goal - 1);
         width2 = (int) x;
@@ -707,6 +708,7 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnSetGoalActionPerformed
 
+    // choose date
     private void btnDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateActionPerformed
         ChooseDate cd = new ChooseDate(today, this, true);
         cd.setLocationRelativeTo(this);
@@ -735,6 +737,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_btnDateActionPerformed
 
+    // edit food records for a date
     private void editFoodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editFoodActionPerformed
         EditFood ef = new EditFood(today, this, true);
         
@@ -761,6 +764,7 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_editFoodActionPerformed
 
+    // edit sport records for a date
     private void editSportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSportActionPerformed
         EditSport es = new EditSport(today, this, true);
         
