@@ -710,7 +710,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     // choose date
     private void btnDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateActionPerformed
+        /*
         ChooseDate cd = new ChooseDate(today, this, true);
+        
+        */
+        
+        MyCalendar cd = new MyCalendar(this, true);
+        
         cd.setLocationRelativeTo(this);
         cd.setVisible(true);
         
@@ -718,7 +724,8 @@ public class MainFrame extends javax.swing.JFrame {
         cd.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                today = cd.date;
+                if (cd.date != null)
+                    today = cd.date;
                 System.out.println(today);
                 macros = dbh.getMacros(today);
                 setDate();
