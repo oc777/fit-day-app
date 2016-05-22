@@ -77,6 +77,9 @@ public class EditSport extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
         dateLable = new javax.swing.JLabel();
         showDateLable = new javax.swing.JLabel();
+        btnAdd = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -93,6 +96,9 @@ public class EditSport extends javax.swing.JDialog {
         jScrollPane1.setViewportView(sportTable);
 
         btnClose.setText("Close");
+        btnClose.setMaximumSize(new java.awt.Dimension(80, 29));
+        btnClose.setMinimumSize(new java.awt.Dimension(80, 29));
+        btnClose.setPreferredSize(new java.awt.Dimension(80, 29));
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
@@ -113,6 +119,7 @@ public class EditSport extends javax.swing.JDialog {
         btnUpdate.setEnabled(false);
         btnUpdate.setMaximumSize(new java.awt.Dimension(90, 29));
         btnUpdate.setMinimumSize(new java.awt.Dimension(90, 29));
+        btnUpdate.setPreferredSize(new java.awt.Dimension(90, 29));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -121,6 +128,9 @@ public class EditSport extends javax.swing.JDialog {
 
         btnDelete.setText("Delete");
         btnDelete.setEnabled(false);
+        btnDelete.setMaximumSize(new java.awt.Dimension(80, 29));
+        btnDelete.setMinimumSize(new java.awt.Dimension(80, 29));
+        btnDelete.setPreferredSize(new java.awt.Dimension(80, 29));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -131,47 +141,76 @@ public class EditSport extends javax.swing.JDialog {
 
         showDateLable.setText("today");
 
+        btnAdd.setText("Add");
+        btnAdd.setEnabled(false);
+        btnAdd.setMaximumSize(new java.awt.Dimension(80, 29));
+        btnAdd.setMinimumSize(new java.awt.Dimension(80, 29));
+        btnAdd.setPreferredSize(new java.awt.Dimension(80, 29));
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/sport.png"))); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel2.setText("ACTIVITY LOG");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nameLable)
-                                    .addComponent(dateLable))
-                                .addGap(35, 35, 35))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(calLable)
-                                .addGap(18, 18, 18)))
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnClose, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(calField, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(showDateLable))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(dateLable)
+                                            .addGap(22, 22, 22))
+                                        .addComponent(calLable, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(nameLable))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(calField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                    .addComponent(showDateLable)
+                                    .addComponent(nameField))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dateLable)
                             .addComponent(showDateLable))
@@ -183,36 +222,37 @@ public class EditSport extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(calLable)
                             .addComponent(calField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(54, 54, 54)
+                        .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnClose)
                             .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDelete))))
-                .addContainerGap(36, Short.MAX_VALUE))
+                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-        //try { rs.close(); }
-        //catch (SQLException e) { System.out.println(e); }
         dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        //String[] data = {nameField.getText(), calField.getText()};
 
         dtm.removeRow(selectedRow);
         dbh.updateSportDelete(date, selectedRow);
         emptyTextBoxes();
+        removeBorder();
+        disableButtons();
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void sportTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sportTableMouseClicked
         
-        btnUpdate.setEnabled(true);
-        btnDelete.setEnabled(true);
+        enableButtons();
         
         selectedRow = sportTable.getSelectedRow();
         //System.out.println(selectedRow);
@@ -227,16 +267,13 @@ public class EditSport extends javax.swing.JDialog {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         
-        Border border = BorderFactory.createLineBorder(Color.RED, 1);
-        
-        nameField.setBorder(null);
-        calField.setBorder(null);
+        Border border = BorderFactory.createLineBorder(Color.RED, 1);       
+        removeBorder();
             
             
             try {
-                  
-                
-                if (nameField.getText().length() != 0 && nameField.getText().length() <= 20) {
+                if (nameField.getText().length() != 0) {
+                    
                     sportTable.setValueAt(nameField.getText(), selectedRow, 0);
                     sportTable.setValueAt(calField.getText(), selectedRow, 1);
 
@@ -248,8 +285,8 @@ public class EditSport extends javax.swing.JDialog {
                     disableButtons();
 
                 }
-            else
-                nameField.setBorder(border);
+                else
+                    nameField.setBorder(border);
 
             }
             catch (NumberFormatException e) {
@@ -259,11 +296,46 @@ public class EditSport extends javax.swing.JDialog {
       
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void removeBorder() {
+        nameField.setBorder(null);
+        calField.setBorder(null);
+    }
+    
     private void nameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyTyped
+        btnAdd.setEnabled(true);
+
         // limits the text input to 20 chars
         if (nameField.getText().length() >= 20)
             evt.consume();
     }//GEN-LAST:event_nameFieldKeyTyped
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        Border border = BorderFactory.createLineBorder(Color.RED, 1);
+        removeBorder();
+        
+        try {
+            if (nameField.getText().length() != 0) {
+                Vector<Object> data = new Vector<Object>();
+                
+                int cal = Integer.parseInt(calField.getText());
+
+                data.add(nameField.getText());
+                data.add(cal);
+                
+                dtm.addRow(data);
+                dbh.insertDataSport(dbh.getDate(), nameField.getText(), cal);
+
+                emptyTextBoxes();
+                disableButtons();
+                
+            //dbh.printAllSport();
+            //super.dispose();
+            }
+        } catch (NumberFormatException e) {
+            //errorMsg.setText("Only integers");
+            calField.setBorder(border);
+        } 
+    }//GEN-LAST:event_btnAddActionPerformed
 
     
     private void emptyTextBoxes() {
@@ -273,8 +345,15 @@ public class EditSport extends javax.swing.JDialog {
     }
     
     private void disableButtons() {
+        btnAdd.setEnabled(false);
         btnDelete.setEnabled(false);
         btnUpdate.setEnabled(false);
+    }
+    
+    private void enableButtons() {
+        btnAdd.setEnabled(true);
+        btnDelete.setEnabled(true);
+        btnUpdate.setEnabled(true);
     }
     
     
@@ -354,12 +433,15 @@ public class EditSport extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JTextField calField;
     private javax.swing.JLabel calLable;
     private javax.swing.JLabel dateLable;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLable;

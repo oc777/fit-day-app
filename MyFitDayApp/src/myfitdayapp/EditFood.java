@@ -64,6 +64,7 @@ public class EditFood extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         foodTable = new javax.swing.JTable(buildTable(rs)) {
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -85,9 +86,24 @@ public class EditFood extends javax.swing.JDialog {
         btnDelete = new javax.swing.JButton();
         dateLable = new javax.swing.JLabel();
         showDateLable = new javax.swing.JLabel();
+        btnAdd = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setPreferredSize(new java.awt.Dimension(600, 408));
         setResizable(false);
 
         foodTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
@@ -100,6 +116,9 @@ public class EditFood extends javax.swing.JDialog {
         jScrollPane1.setViewportView(foodTable);
 
         btnClose.setText("Close");
+        btnClose.setMaximumSize(new java.awt.Dimension(80, 29));
+        btnClose.setMinimumSize(new java.awt.Dimension(80, 29));
+        btnClose.setPreferredSize(new java.awt.Dimension(80, 29));
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
@@ -126,6 +145,7 @@ public class EditFood extends javax.swing.JDialog {
         btnUpdate.setEnabled(false);
         btnUpdate.setMaximumSize(new java.awt.Dimension(90, 29));
         btnUpdate.setMinimumSize(new java.awt.Dimension(90, 29));
+        btnUpdate.setPreferredSize(new java.awt.Dimension(90, 29));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -144,48 +164,81 @@ public class EditFood extends javax.swing.JDialog {
 
         showDateLable.setText("today");
 
+        btnAdd.setText("Add");
+        btnAdd.setEnabled(false);
+        btnAdd.setMaximumSize(new java.awt.Dimension(90, 29));
+        btnAdd.setMinimumSize(new java.awt.Dimension(90, 29));
+        btnAdd.setPreferredSize(new java.awt.Dimension(90, 29));
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel1.setText("MEALS LOG");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/food.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nameLable)
+                                    .addComponent(calLable)
+                                    .addComponent(fatLable)
+                                    .addComponent(carbLable)
+                                    .addComponent(proteinLable)
+                                    .addComponent(dateLable))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(showDateLable)
+                                    .addComponent(proteinField, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(carbField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(fatField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(calField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 7, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(dateLable)
-                            .addGap(54, 54, 54)
-                            .addComponent(showDateLable))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(nameLable)
-                                .addComponent(calLable)
-                                .addComponent(fatLable)
-                                .addComponent(carbLable)
-                                .addComponent(proteinLable))
-                            .addGap(27, 27, 27)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(nameField)
-                                .addComponent(calField)
-                                .addComponent(fatField)
-                                .addComponent(carbField)
-                                .addComponent(proteinField, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(17, 17, 17))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dateLable)
                             .addComponent(showDateLable))
@@ -209,39 +262,36 @@ public class EditFood extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(proteinLable)
                             .addComponent(proteinField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnClose)
                             .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDelete)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                            .addComponent(btnDelete)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-        //try { rs.close(); }
-        //catch (SQLException e) { System.out.println(e); }
         dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        //String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
 
         dtm.removeRow(selectedRow);
         dbh.updateFoodDelete(date, selectedRow);
         emptyTextBoxes();
+        removeBorder();
+        disableButtons();
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void foodTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTableMouseClicked
         
-        btnUpdate.setEnabled(true);
-        btnDelete.setEnabled(true);
+        enableButtons();
         
         selectedRow = foodTable.getSelectedRow();
         //System.out.println(selectedRow);
@@ -261,23 +311,16 @@ public class EditFood extends javax.swing.JDialog {
         String p = foodTable.getModel().getValueAt(selectedRow,4).toString();
         proteinField.setText(p);
             
-            
-        
-        
     }//GEN-LAST:event_foodTableMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         
         Border border = BorderFactory.createLineBorder(Color.RED, 1);
+        removeBorder();
         
-        nameField.setBorder(null);
-        calField.setBorder(null);
-        fatField.setBorder(null);
-        carbField.setBorder(null);
-        proteinField.setBorder(null);
         
         try {
-            if (nameField.getText().length() != 0 && nameField.getText().length() <= 20) {
+            if (nameField.getText().length() != 0 ) {
         
                 foodTable.setValueAt(nameField.getText(), selectedRow, 0);
                 foodTable.setValueAt(calField.getText(), selectedRow, 1);
@@ -328,10 +371,74 @@ public class EditFood extends javax.swing.JDialog {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void nameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyTyped
+        btnAdd.setEnabled(true);
+        
         // limits the text input to 20 chars
         if (nameField.getText().length() >= 20)
             evt.consume();
     }//GEN-LAST:event_nameFieldKeyTyped
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        Border border = BorderFactory.createLineBorder(Color.RED, 1);
+        removeBorder();
+        
+        try {
+            if (nameField.getText().length() != 0) {
+                Vector<Object> data = new Vector<Object>();
+                
+                
+                int cal = Integer.parseInt(calField.getText());
+                int fat = Integer.parseInt(fatField.getText());
+                int carb = Integer.parseInt(carbField.getText());
+                int p = Integer.parseInt(proteinField.getText());
+                
+                data.add(nameField.getText());
+                data.add(cal);
+                data.add(fat);
+                data.add(carb);
+                data.add(p);
+
+                dtm.addRow(data);
+                dbh.insertDataFood(dbh.getDate(), nameField.getText(), cal, fat, carb, p);
+
+                emptyTextBoxes();
+
+                disableButtons();
+                //super.dispose();
+            }
+            else
+                nameField.setBorder(border);
+        
+        } catch (NumberFormatException e) {
+            //errorMsg.setText("Only integers");
+            
+            try {
+                int cal = Integer.parseInt(calField.getText());
+            } catch (NumberFormatException ex) {
+                calField.setBorder(border);
+            }
+            
+            try {
+                int f = Integer.parseInt(fatField.getText());
+            } catch (NumberFormatException ex) {
+                fatField.setBorder(border);
+            }
+            
+            try {
+                int carb = Integer.parseInt(carbField.getText());
+            } catch (NumberFormatException ex) {
+                carbField.setBorder(border);
+            }
+            
+            try {
+                int p = Integer.parseInt(proteinField.getText());
+            } catch (NumberFormatException ex) {
+                proteinField.setBorder(border);
+            }
+            
+        }
+        
+    }//GEN-LAST:event_btnAddActionPerformed
 
     
     private void emptyTextBoxes() {
@@ -342,9 +449,24 @@ public class EditFood extends javax.swing.JDialog {
         proteinField.setText("");
     }
     
+    private void removeBorder() {
+        nameField.setBorder(null);
+        calField.setBorder(null);
+        fatField.setBorder(null);
+        carbField.setBorder(null);
+        proteinField.setBorder(null);
+    }
+    
     private void disableButtons() {
+        btnAdd.setEnabled(false);
         btnDelete.setEnabled(false);
         btnUpdate.setEnabled(false);
+    }
+    
+    private void enableButtons() {
+        btnAdd.setEnabled(true);
+        btnDelete.setEnabled(true);
+        btnUpdate.setEnabled(true);
     }
     
     public DefaultTableModel buildTable(ResultSet rs)  {
@@ -424,6 +546,7 @@ public class EditFood extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
@@ -435,6 +558,9 @@ public class EditFood extends javax.swing.JDialog {
     private javax.swing.JTextField fatField;
     private javax.swing.JLabel fatLable;
     private javax.swing.JTable foodTable;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLable;

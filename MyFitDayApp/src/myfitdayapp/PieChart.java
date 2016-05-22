@@ -62,7 +62,7 @@ public class PieChart {
         chart = ChartFactory.createPieChart(null, chartData, false, false, false);
         
         // same background as the panel in MainFrame
-        chart.setBackgroundPaint(Color.DARK_GRAY);
+        chart.setBackgroundPaint(new Color(51, 51, 51));
         
         // create chart plot 
         plot = (PiePlot) chart.getPlot();
@@ -71,11 +71,11 @@ public class PieChart {
         plot.setInteriorGap(0.01);
         plot.setOutlineVisible(false);
         plot.setBackgroundPaint(null);
-        plot.setForegroundAlpha(0.8f);
+        //plot.setForegroundAlpha(0.8f);
         
-        plot.setSectionPaint(0, Color.orange);
-        plot.setSectionPaint(1, Color.cyan);
-        plot.setSectionPaint(2, Color.red);
+        plot.setSectionPaint(0, new Color(135, 198, 197));
+        plot.setSectionPaint(1, new Color(177, 192, 41));
+        plot.setSectionPaint(2, new Color(222, 0, 33));
         
         plot.setShadowXOffset(0);
         plot.setShadowYOffset(0);

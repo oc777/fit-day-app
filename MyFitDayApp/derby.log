@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Sat May 21 18:16:46 CEST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-d41a-cc12-000006cec5c8 
+Sun May 22 17:58:53 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-d930-c811-000006cec538 
 on database directory /Users/olgachristensen/NetBeansProjects/oc222ba-project/MyFitDayApp/appdb with class loader sun.misc.Launcher$AppClassLoader@2b193f2d 
 Loaded from file:/Users/olgachristensen/NetBeansProjects/oc222ba-project/MyFitDayApp/src/lib/derby.jar
 java.vendor=Oracle Corporation

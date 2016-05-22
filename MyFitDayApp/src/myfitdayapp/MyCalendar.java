@@ -9,7 +9,6 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class MyCalendar extends javax.swing.JDialog {
-    static JLabel lblMonth, lblYear;
+    static JLabel lblMonth;
     static JButton btnPrev, btnNext, btnChoose, btnCancel;
     static JTable tblCalendar;
     static JComboBox cmbYear;
@@ -83,9 +83,11 @@ public class MyCalendar extends javax.swing.JDialog {
         pane.setLayout(null); //Apply null layout
             
 	lblMonth = new JLabel("January");
-	lblYear = new JLabel("Year:");
+        lblMonth.setHorizontalAlignment(SwingConstants.CENTER);
+	
 	cmbYear = new JComboBox();
 	btnPrev = new JButton("<");
+        btnPrev.setFocusPainted(false);
 	btnNext = new JButton(">");
         btnChoose = new JButton("Choose");
         btnChoose.setEnabled(true);
@@ -126,7 +128,6 @@ public class MyCalendar extends javax.swing.JDialog {
     
     private void addControls() {
 	pane.add(lblMonth);
-        pane.add(lblYear);
         pane.add(cmbYear);
         pane.add(btnPrev);
         pane.add(btnNext);
@@ -138,14 +139,14 @@ public class MyCalendar extends javax.swing.JDialog {
 
     private void setBounds() {
 	//pane.setBounds(0, 0, 320, 335);
-	lblMonth.setBounds(160 - lblMonth.getPreferredSize().width / 2, 25, 100, 25);
-	lblYear.setBounds(10, 305, 80, 20);
-        cmbYear.setBounds(205, 305, 90, 20);
+	//lblMonth.setBounds(85 - lblMonth.getPreferredSize().width / 2, 25, 100, 25);
+        lblMonth.setBounds(60, 25, 85, 25);
+        cmbYear.setBounds(205, 25, 90, 20);
 	btnPrev.setBounds(10, 25, 50, 25);
-	btnNext.setBounds(240, 25, 50, 25);
-	stblCalendar.setBounds(10, 50, 280, 250);
-        btnChoose.setBounds(10, 350, 90, 20);
-        btnCancel.setBounds(205, 350, 90, 20);
+	btnNext.setBounds(145, 25, 50, 25);
+	stblCalendar.setBounds(10, 70, 280, 250);
+        btnChoose.setBounds(10, 350, 90, 29);
+        btnCancel.setBounds(200, 350, 90, 29);
         
     }
     
@@ -159,7 +160,7 @@ public class MyCalendar extends javax.swing.JDialog {
     }
 
     private void addHeaders() {
-	String[] headers = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+	String[] headers = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
 	for (int i = 0; i < 7; i++) {
 	    mtblCalendar.addColumn(headers[i]);
 	}
@@ -211,7 +212,8 @@ public class MyCalendar extends javax.swing.JDialog {
         if (month == 0 && year <= realYear-10){btnPrev.setEnabled(false);} //Too early
         if (month == 11 && year >= realYear+100){btnNext.setEnabled(false);} //Too late
         lblMonth.setText(months[month]); //Refresh the month label (at the top)
-        lblMonth.setBounds(160-lblMonth.getPreferredSize().width/2, 25, 180, 25); //Re-align label with calendar
+        //lblMonth.setBounds(160-lblMonth.getPreferredSize().width/2, 25, 180, 25); //Re-align label with calendar
+        lblMonth.setBounds(60, 25, 85, 25);
         cmbYear.setSelectedItem(String.valueOf(year)); //Select the correct year in the combo box
 
         //Clear table
@@ -245,18 +247,18 @@ public class MyCalendar extends javax.swing.JDialog {
             super.getTableCellRendererComponent(table, value, selected, focused, row, column);
             super.setHorizontalAlignment(CENTER);
             if (column == 5 || column == 6){ //Week-end
-                    setBackground(new Color(255, 220, 220));
+                    setBackground(new Color(255, 210, 210));
             }
             else{ //Week
                     setBackground(new Color(255, 255, 255));
             }
             if (value != null){
                     if (Integer.parseInt(value.toString()) == realDay && currentMonth == realMonth && currentYear == realYear){ //Today
-                            setBackground(new Color(220, 220, 255));
+                            setBackground(new Color(220, 220, 125));
                     }
             }
             if (selected) {
-                setBackground(new Color(220,220,0));
+                setBackground(new Color(175,230,230));
                 int mm = currentMonth+1;
                 date = value.toString()+"."+mm+"."+currentYear;
                 //System.out.println(date);
