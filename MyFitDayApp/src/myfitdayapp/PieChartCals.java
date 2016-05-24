@@ -14,38 +14,37 @@ import org.jfree.data.general.DefaultPieDataset;
  * 
  * @author olgachristensen
  */
-public class PieChart {
+public class PieChartCals {
     
     public ChartPanel panel;
     public JFreeChart chart;
     private PiePlot plot;
     private DefaultPieDataset chartData;
     
-    private int f;
-    private int c;
-    private int p;
+    private int food;
+    private int sport;
     
-    // constructor for empty chart when macros==null
-    public PieChart() {
-        // default values for macros
-        f = 30;
-        c = 30;
-        p = 30;
+    
+    // constructor for empty chart 
+    public PieChartCals() {
+        // default values for chart
+        food = 50;
+        sport = 50;
+        
         
         initialise();
         
         plot.setSectionPaint(0, Color.gray);
         plot.setSectionPaint(1, Color.lightGray);
-        plot.setSectionPaint(2, Color.white);
+        //plot.setSectionPaint(2, Color.white);
            
     }
     
-    // constructor for chart when macros!=null
-    public PieChart(int fat, int carbs, int protein) {
+    // constructor for sport & food != null
+    public PieChartCals(int f, int s) {
         
-        f = fat;
-        c = carbs;
-        p = protein;
+        food = f;
+        sport = s;
         
         initialise();
         
@@ -54,9 +53,8 @@ public class PieChart {
     private void initialise() {
         // data for the chart
         chartData = new DefaultPieDataset();
-        chartData.setValue("fat", new Integer(f));
-        chartData.setValue("carbs", new Integer(c));
-        chartData.setValue("protein", new Integer(p));
+        chartData.setValue("food", new Integer(food));
+        chartData.setValue("sport", new Integer(sport));
         
         // no title, data, legend, tooltips, url
         chart = ChartFactory.createPieChart(null, chartData, false, false, false);
@@ -73,9 +71,8 @@ public class PieChart {
         plot.setBackgroundPaint(null);
         //plot.setForegroundAlpha(0.8f);
         
-        plot.setSectionPaint(0, new Color(135, 198, 197));
-        plot.setSectionPaint(1, new Color(177, 192, 41));
-        plot.setSectionPaint(2, new Color(222, 0, 33));
+        plot.setSectionPaint(0, new Color(177, 192, 41));
+        plot.setSectionPaint(1, new Color(222, 0, 33));
         
         plot.setShadowXOffset(0);
         plot.setShadowYOffset(0);
@@ -94,5 +91,6 @@ public class PieChart {
         //panel.setBackground(Color.white);
         //chart.setBackgroundPaint(new Color(0,0,0,0));
     }
+    
     
 }

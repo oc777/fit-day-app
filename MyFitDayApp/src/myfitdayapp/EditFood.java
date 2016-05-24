@@ -28,6 +28,7 @@ public class EditFood extends javax.swing.JDialog {
     public String date;
     private int selectedRow;
     private DefaultTableModel dtm;
+    public int err;
     
     /**
      * Creates new form EditFood
@@ -406,8 +407,10 @@ public class EditFood extends javax.swing.JDialog {
                 disableButtons();
                 //super.dispose();
             }
-            else
+            else {
                 nameField.setBorder(border);
+                
+            }
         
         } catch (NumberFormatException e) {
             //errorMsg.setText("Only integers");

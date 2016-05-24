@@ -83,7 +83,6 @@ public class EditSport extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-        setPreferredSize(new java.awt.Dimension(600, 270));
         setResizable(false);
 
         sportTable.setSelectionBackground(new java.awt.Color(153, 153, 153));
@@ -190,7 +189,6 @@ public class EditSport extends javax.swing.JDialog {
                                             .addGap(22, 22, 22))
                                         .addComponent(calLable, javax.swing.GroupLayout.Alignment.LEADING))
                                     .addComponent(nameLable))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(calField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                                     .addComponent(showDateLable)
@@ -328,8 +326,10 @@ public class EditSport extends javax.swing.JDialog {
                 emptyTextBoxes();
                 disableButtons();
                 
-            //dbh.printAllSport();
-            //super.dispose();
+            
+            } 
+            else {
+                nameField.setBorder(border);
             }
         } catch (NumberFormatException e) {
             //errorMsg.setText("Only integers");
@@ -433,17 +433,17 @@ public class EditSport extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
+    protected javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JTextField calField;
+    protected javax.swing.JTextField calField;
     private javax.swing.JLabel calLable;
     private javax.swing.JLabel dateLable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nameField;
+    protected javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLable;
     private javax.swing.JLabel showDateLable;
     private javax.swing.JTable sportTable;

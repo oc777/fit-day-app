@@ -135,14 +135,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         txtConsumed.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtConsumed.setForeground(new java.awt.Color(255, 255, 255));
-        txtConsumed.setText("Taken:");
+        txtConsumed.setText("Meals:");
         txtConsumed.setMaximumSize(new java.awt.Dimension(57, 40));
         txtConsumed.setMinimumSize(new java.awt.Dimension(57, 40));
         txtConsumed.setPreferredSize(new java.awt.Dimension(57, 40));
 
         txtSpent.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         txtSpent.setForeground(new java.awt.Color(255, 255, 255));
-        txtSpent.setText("Spent:");
+        txtSpent.setText("Sport:");
         txtSpent.setMaximumSize(new java.awt.Dimension(55, 40));
         txtSpent.setMinimumSize(new java.awt.Dimension(55, 40));
         txtSpent.setPreferredSize(new java.awt.Dimension(55, 40));
