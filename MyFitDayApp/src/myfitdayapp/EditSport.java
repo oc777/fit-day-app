@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
@@ -240,17 +241,23 @@ public class EditSport extends javax.swing.JDialog {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
 
-        dtm.removeRow(selectedRow);
-        dbh.updateSportDelete(date, selectedRow);
-        emptyTextBoxes();
-        removeBorder();
-        disableButtons();
+        int q = JOptionPane.showConfirmDialog(this, "Delete chosen record?", 
+                "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
+        if (q == 0) {
+            dtm.removeRow(selectedRow);
+            dbh.updateSportDelete(date, selectedRow);
+            emptyTextBoxes();
+            removeBorder();
+            disableButtons();
+        }
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void sportTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sportTableMouseClicked
         
         enableButtons();
+        removeBorder();
         
         selectedRow = sportTable.getSelectedRow();
         //System.out.println(selectedRow);

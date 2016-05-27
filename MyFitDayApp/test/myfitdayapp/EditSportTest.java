@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package myfitdayapp;
 
 
@@ -10,11 +6,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Test for user input in EditSport.java
+ * 
+ * When a user enters a unsupported data, the text field is shown with red border
+ * 
  * @author olgachristensen
  */
 public class EditSportTest {
     
+    // Correct data is entered in Name and Calories fields -> border == null
     @Test
     public void testAddCorrectInput() {
         System.out.println("add correct data");
@@ -31,6 +31,7 @@ public class EditSportTest {
         
     }
 
+    // Trying to add empty Name field -> error
     @Test
     public void testAddEmptyName() {
         System.out.println("add empty name field");
@@ -48,6 +49,7 @@ public class EditSportTest {
         
     }
     
+    // Trying to add empty Calorie field -> error
     @Test
     public void testAddEmptyCals() {
         System.out.println("add empty cal field");
@@ -63,6 +65,7 @@ public class EditSportTest {
         
     }
     
+    // Trying to add text (not numbers) in Calorie field -> error
     @Test
     public void testAddNonIntegerCals() {
         System.out.println("add text cal field");
@@ -77,11 +80,6 @@ public class EditSportTest {
         assertTrue(es.calField.getBorder() != null);
         
     }
-    
-    
-    
-    
-// nameField.getBorder != null;
     
     
 }

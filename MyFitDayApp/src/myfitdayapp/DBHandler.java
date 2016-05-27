@@ -632,6 +632,63 @@ public class DBHandler {
         return str;
     }
     
+    // Statistics - calculate macros ovaer a period
+    public int[] getMacrosStats(String startDate, String endDate) {
+        int[] macrosStats = new int[3];
+        int fat = 0;
+        int carbs = 0;
+        int p = 0;
+        
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+            
+            while (rs.next()) {
+                if (rs.getString("fat") != null)
+                    fat += Integer.parseInt(rs.getString("fat"));
+                if (rs.getString("carbs") != null)
+                    carbs += Integer.parseInt(rs.getString("carbs"));
+                if (rs.getString("protein") != null)
+                    p += Integer.parseInt(rs.getString("protein"));
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        macrosStats[0] = fat;
+        macrosStats[1] = carbs;
+        macrosStats[2] = p;
+        
+        return macrosStats;
+    }
+    
+    // Statistics - calculate calorie ovaer a period
+    public int[] getCaloriesStats(String startDate, String endDate) {
+        int[] calStats = new int[2];
+        int food = 0;
+        int sport = 0;
+        
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+            
+            while (rs.next()) {
+                if (rs.getString("food") != null)
+                    food += Integer.parseInt(rs.getString("food"));
+                if (rs.getString("sport") != null)
+                    sport += Integer.parseInt(rs.getString("sport"));
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        calStats[0] = food;
+        calStats[1] = sport;
+        
+        return calStats;
+    }
 
     
 }
