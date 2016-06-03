@@ -1,29 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package myfitdayapp;
 
 import java.awt.Color;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 
 /**
- *
+ * Window to view statistics in chart format over a week or a month period
+ * 
  * @author olgachristensen
  */
 public class Statistics extends javax.swing.JFrame {
 
-    private DBHandler dbh;
+    private final DBHandler dbh;
+    private final DateFormat dateFormat;
+    private final Calendar cal;
+    
     private String endDate;
     private String startDate;
     private boolean week;
-    private DateFormat dateFormat;
-    private Calendar cal;
     private int[] macros;
     private int[] calories;
     private String[] dates;
@@ -36,11 +33,14 @@ public class Statistics extends javax.swing.JFrame {
     
     private static Statistics obj = null;
     
+    // constructor 
+    // instance is invoked from other classes with getObj() static method
     private Statistics(String today) {
         dbh = new DBHandler();
         endDate = today;
         week = true;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         cal = Calendar.getInstance();
         
         macros = new int[3];
@@ -54,21 +54,27 @@ public class Statistics extends javax.swing.JFrame {
         
         
         lblEndDate.setText(endDate);
-        setStartDate(-1);
+        setStartDate(-1); // -1 = back in time
+        
         getTotals();
         addChartMacros();
         addChartCalories();
         addChart();
         
+        // place in the middle of the screen
         setLocationRelativeTo(null);
     }
     
+    // used to create a new instance of Statistics from main frame
+    // to make sure that only one instance is shown at a time
     public static Statistics getObj(String date) {
-        if (obj == null)
+        // check if window is already open (!= nul)
+        if (obj == null) 
             obj = new Statistics(date);
-        
+            
         return obj;
     }
+    
     
     // redraw chart with new data
     private void updateCharts() {
@@ -93,6 +99,8 @@ public class Statistics extends javax.swing.JFrame {
         
     }
     
+    // x < 0 : going back in time
+    // x > 0 : going forward in time
     private void setStartDate(int x) {
         try {
                 cal.setTime(dateFormat.parse(endDate));
@@ -107,7 +115,6 @@ public class Statistics extends javax.swing.JFrame {
                 cal.add(Calendar.DATE, 1);
             
             startDate = dateFormat.format(cal.getTime());
-            //System.out.println(startDate);
         }
         else {
             if (x < 0)
@@ -116,13 +123,14 @@ public class Statistics extends javax.swing.JFrame {
                 cal.add(Calendar.DATE, 0);
             
             startDate = dateFormat.format(cal.getTime());
-            //System.out.println("start "+startDate);
         }
         
         lblStartDate.setText(startDate);
             
     }
     
+    // x < 0 : going back in time
+    // x > 0 : going forward in time
     private void setEndDate(int x) {
         try {
                 cal.setTime(dateFormat.parse(startDate));
@@ -140,19 +148,21 @@ public class Statistics extends javax.swing.JFrame {
         }
             
         endDate = dateFormat.format(cal.getTime());
-        //System.out.println("end "+endDate);
         
         lblEndDate.setText(endDate);
     }
     
+    // get total Macros for selected period
     private void getMacros() {
         macros = dbh.getMacrosStats(startDate, endDate);
     }
     
+    // get total Calories for selcted period
     private void getCalories() {
         calories = dbh.getCaloriesStats(startDate, endDate);
     }
     
+    // get data for BarChart for selcted period
     private void getTotals() {
         dates = dbh.getDatesChart(startDate, endDate);
         goal = dbh.getGoalChart(startDate, endDate);
@@ -161,6 +171,7 @@ public class Statistics extends javax.swing.JFrame {
         checkTotals();
     }
     
+    // check if any meals or sports are registered during selected period
     private void checkTotals() {
         totalsEmpty = true;
         
@@ -173,10 +184,11 @@ public class Statistics extends javax.swing.JFrame {
             
     }
     
-    
+    // draw the pie chart for Macros
     private void addChartMacros() {
         getMacros();
         
+        // nothing registered during selected period
         if (macros[0] == 0 && macros[1] == 0 && macros[2] == 0) {
             chartMacros = new PieChart();
         }
@@ -191,16 +203,18 @@ public class Statistics extends javax.swing.JFrame {
         pnlChartMacros.add(chartMacros.panel);
         pnlChartMacros.validate();
         
+        // set values for "legend"
         txtFat.setText(""+ macros[0]);
         txtCarbs.setText("" + macros[1]);
         txtProtein.setText("" + macros[2]);
         
     }
     
-    
+    // draw the pie chart for Calories consuption / spending
     private void addChartCalories() {
         getCalories();
         
+        // nothing registered during selected period
         if (calories[0] == 0 && calories[1] == 0) {
             chartCals = new PieChartCals();
         }
@@ -214,17 +228,17 @@ public class Statistics extends javax.swing.JFrame {
         pnlChartCals.add(chartCals.panel);
         pnlChartCals.validate();
         
+        // set values for "legend"
         txtSport.setText("" + calories[1]);
         txtFood.setText("" + calories[0]);
         
     }
     
+    // draw the bar chart for Totals vs Goal
     private void addChart() {
         getTotals();
         
-        System.out.println(Arrays.toString(total));
-        System.out.println(totalsEmpty);
-        
+        // nothing registered during selected period
         if (totalsEmpty || total.length == 0)
             chartTotals = new BarChart();
         else
@@ -274,8 +288,13 @@ public class Statistics extends javax.swing.JFrame {
         lblFood = new javax.swing.JLabel();
         pnlFood = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                closeStats(evt);
+            }
+        });
 
         lblEndDate.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lblEndDate.setForeground(new java.awt.Color(255, 153, 0));
@@ -673,6 +692,8 @@ public class Statistics extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    // choose to view data for one month 
     private void btnMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonthActionPerformed
         week = false;
         btnMonth.setEnabled(false);
@@ -682,6 +703,7 @@ public class Statistics extends javax.swing.JFrame {
         updateCharts();
     }//GEN-LAST:event_btnMonthActionPerformed
 
+    // choose to view data for one week 
     private void btnWeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWeekActionPerformed
         week = true;
         btnMonth.setEnabled(true);
@@ -691,6 +713,8 @@ public class Statistics extends javax.swing.JFrame {
         updateCharts();
     }//GEN-LAST:event_btnWeekActionPerformed
 
+    // show previous period
+    // (going back in time)
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         setEndDate(-1);
         setStartDate(-1);
@@ -699,6 +723,8 @@ public class Statistics extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnPrevActionPerformed
 
+    // show next period
+    // (going forward in time)
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         setStartDate(1);
         setEndDate(1);
@@ -707,40 +733,14 @@ public class Statistics extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnNextActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Statistics.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Statistics.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Statistics.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Statistics.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    // do on close:
+    private void closeStats(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeStats
+        // when Statistics are opened again, a new instance is created
+        obj = null;
+        this.dispose();
+    }//GEN-LAST:event_closeStats
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Statistics("2016-05-28").setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMonth;

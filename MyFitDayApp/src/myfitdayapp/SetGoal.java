@@ -13,40 +13,47 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *
+ * Dialog window to set/change the goal in calorie intake
+ * 
  * @author olgachristensen
  */
 public class SetGoal extends javax.swing.JDialog {
     private int goal;
     private DBHandler dbh;
+    private String date;
     
     /**
-     * Creates new form SetGoalD
+     * Constructor
+     * Creates new form SetGoal
      */
-    public SetGoal(JFrame parent, boolean modal ) {
+    public SetGoal(JFrame parent, boolean modal, String today) {
         super(parent, modal);
+        // remove close / minimize controls
         setUndecorated(true);
         initComponents();
         dbh = new DBHandler();
+        date = today;
         
+        // enable or disable Set Goal button
         fGoal.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
-                check();
+                updateBtn();
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                check();
+                updateBtn();
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                check();
+                updateBtn();
             }
             
         });
     }
     
-    private void check() {
+    // disables the Set Goal button if the field is empty
+    private void updateBtn() {
         if (fGoal.getText().equals(""))
             btnSetGoal.setEnabled(false);
         
@@ -148,17 +155,21 @@ public class SetGoal extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // clicked Close
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    // clicked Set Goal
     private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
+        // red border for fields with incompatible data 
         Border border = BorderFactory.createLineBorder(Color.RED, 1);
         
+        // check if integer was entered 
         try {
             goal = Integer.parseInt(fGoal.getText());
-            System.out.println(goal);
-            dbh.insertDataGoal(dbh.getDate(), goal);
+            // update DB
+            dbh.insertDataGoal(date, goal);
             dispose();
         } catch (NumberFormatException e) {
             errorMsg.setText("Only integers");
@@ -166,57 +177,6 @@ public class SetGoal extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnSetGoalActionPerformed
 
-    
-    public int goal() {
-        return goal;
-    }
-    
-    
-    /**
-     * @param args the command line arguments
-     */
-    /*
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-    /*
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SetGoalD.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                SetGoalD dialog = new SetGoalD(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-        
-    }
-    */
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -17,7 +17,9 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- *
+ * Bar Chart in Statistics
+ * shows the difference between the goal set for the day and actual calorie intake
+ * 
  * @author olgachristensen
  */
 public class BarChart {
@@ -31,7 +33,7 @@ public class BarChart {
     private CategoryDataset data;
     private BarRenderer renderer;
     
-    
+    // constructor for empty chart (no data available)
     public BarChart() {
         date = new String[]{"yyyy-mm-dd"};
         goal = new int[] {1500};
@@ -42,6 +44,7 @@ public class BarChart {
         renderer.setSeriesPaint(1, Color.darkGray);
     }
     
+    // constructor for bar chart with data
     public BarChart(String[] dates, int[] goals, int[] totals) {
         date = dates;
         goal = goals;
@@ -50,6 +53,7 @@ public class BarChart {
         initialise();
     }
     
+    // create chart
     private void initialise() {
         data = getData();
         createChart();
@@ -64,13 +68,16 @@ public class BarChart {
         
     }
     
+    // create data set
     private DefaultCategoryDataset getData() {
         DefaultCategoryDataset ds = new DefaultCategoryDataset();
        
+        // add totals
         for (int i = 0; i < date.length; i++) {
             ds.addValue(total[i], "Total", date[i]);
         }
         
+        // add goal
         for (int i = 0; i < date.length; i++) {
             ds.addValue(goal[i], "Goal", date[i]);
         }
@@ -79,9 +86,10 @@ public class BarChart {
         return ds;
     }
     
-    
+    // draw and decorate the chart
     private void createChart() {
         chart = ChartFactory.createBarChart(null, null, null, data);
+        // don't show the legend
         chart.removeLegend();
         // same background as the panel in MainFrame
         chart.setBackgroundPaint(new Color(51, 51, 51));
@@ -91,7 +99,7 @@ public class BarChart {
         plot.setDomainGridlinePaint(Color.white);
         plot.setDomainGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.white);
-        //plot.getDomainAxis().setVisible(false);
+        // show bars without gradient
         ((BarRenderer) plot.getRenderer()).setBarPainter(new StandardBarPainter());
 
         renderer = (BarRenderer) plot.getRenderer();
@@ -104,8 +112,6 @@ public class BarChart {
         renderer.setBaseItemLabelsVisible(true);
 
         
-        
-        
         // category axis, X
         CategoryAxis domainAxis = plot.getDomainAxis();
         domainAxis.setTickLabelPaint(Color.WHITE);
@@ -117,8 +123,6 @@ public class BarChart {
         // value axis, Y
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setVisible(false);
-        //rangeAxis.setTickLabelPaint(Color.WHITE);
-        //rangeAxis.setTickLabelFont(new Font("sans-serif", Font.BOLD, 12));
         rangeAxis.setLowerMargin(0.1);
         rangeAxis.setUpperMargin(0.25);
         

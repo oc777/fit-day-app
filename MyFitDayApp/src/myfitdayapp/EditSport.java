@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package myfitdayapp;
 
 import java.awt.Color;
@@ -19,7 +15,13 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Dialog window for handling records of activities for one day
+ * User can 
+ * - view the records (in table form)
+ * - edit existing records
+ * - delete existing records
+ * - add new records
+ * 
  * @author olgachristensen
  */
 public class EditSport extends javax.swing.JDialog {
@@ -31,6 +33,7 @@ public class EditSport extends javax.swing.JDialog {
     private DefaultTableModel dtm;
     
     /**
+     * Constructor
      * Creates new form EditSport
      */
     public EditSport(String d, JFrame parent, boolean modal) {
@@ -41,6 +44,7 @@ public class EditSport extends javax.swing.JDialog {
         date = d;
         selectedRow = 0;
         
+        // remove close / minimize controls
         setUndecorated(true);
         initComponents();
         showDateLable.setText(d);
@@ -235,18 +239,24 @@ public class EditSport extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // clicked CLOSE
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
+    // clicked DELETE
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-
+        // show confirmation dialog
         int q = JOptionPane.showConfirmDialog(this, "Delete chosen record?", 
                 "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         
+        // if deletion confirmed
         if (q == 0) {
+            // remove record from the table
             dtm.removeRow(selectedRow);
+            // update DB
             dbh.updateSportDelete(date, selectedRow);
+            
             emptyTextBoxes();
             removeBorder();
             disableButtons();
@@ -254,13 +264,16 @@ public class EditSport extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    // a row in the table was clicked
     private void sportTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sportTableMouseClicked
         
         enableButtons();
         removeBorder();
         
+        // get index of selected row
         selectedRow = sportTable.getSelectedRow();
-        //System.out.println(selectedRow);
+        
+        // fill the text boxes accordingly 
         
         String n = sportTable.getModel().getValueAt(selectedRow, 0).toString();
         nameField.setText(n);
@@ -270,42 +283,47 @@ public class EditSport extends javax.swing.JDialog {
      
     }//GEN-LAST:event_sportTableMouseClicked
 
+    // clicked UPDATE
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        
+        // prepare red border for text boxes with incompatible input
         Border border = BorderFactory.createLineBorder(Color.RED, 1);       
-        removeBorder();
+        removeBorder(); // for previous entries 
             
             
-            try {
-                if (nameField.getText().length() != 0) {
-                    
-                    sportTable.setValueAt(nameField.getText(), selectedRow, 0);
-                    sportTable.setValueAt(calField.getText(), selectedRow, 1);
+        try {
+            // check if Name field is not empty
+            if (nameField.getText().length() != 0) {
+                // update table
+                sportTable.setValueAt(nameField.getText(), selectedRow, 0);
+                sportTable.setValueAt(calField.getText(), selectedRow, 1);
 
-                    String[] data = {nameField.getText(), calField.getText()};
+                String[] data = {nameField.getText(), calField.getText()};
 
-                    dbh.updateSportEdit(date, selectedRow, data);
+                // update DB record
+                dbh.updateSportEdit(date, selectedRow, data);
 
-                    emptyTextBoxes();
-                    disableButtons();
-
-                }
-                else
-                    nameField.setBorder(border);
+                emptyTextBoxes();
+                disableButtons();
 
             }
-            catch (NumberFormatException e) {
-                calField.setBorder(border);
-            }
+            else
+                nameField.setBorder(border);
+
+        }
+        catch (NumberFormatException e) {
+            calField.setBorder(border);
+        }
         
       
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    // removes red border from text fields (if any)
     private void removeBorder() {
         nameField.setBorder(null);
         calField.setBorder(null);
     }
     
+    // enables ADD button when something is typed in the name field
     private void nameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyTyped
         btnAdd.setEnabled(true);
 
@@ -314,11 +332,14 @@ public class EditSport extends javax.swing.JDialog {
             evt.consume();
     }//GEN-LAST:event_nameFieldKeyTyped
 
+    // clicked ADD
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // prepare red border for text boxes with incompatible input
         Border border = BorderFactory.createLineBorder(Color.RED, 1);
         removeBorder();
         
         try {
+            // check if Name field is not empty
             if (nameField.getText().length() != 0) {
                 Vector<Object> data = new Vector<Object>();
                 
@@ -327,7 +348,9 @@ public class EditSport extends javax.swing.JDialog {
                 data.add(nameField.getText());
                 data.add(cal);
                 
+                // update table
                 dtm.addRow(data);
+                // insert record in DB
                 dbh.insertDataSport(dbh.getDate(), nameField.getText(), cal);
 
                 emptyTextBoxes();
@@ -339,51 +362,48 @@ public class EditSport extends javax.swing.JDialog {
                 nameField.setBorder(border);
             }
         } catch (NumberFormatException e) {
-            //errorMsg.setText("Only integers");
+            //handle bad input
             calField.setBorder(border);
         } 
     }//GEN-LAST:event_btnAddActionPerformed
 
-    
+    // empties the text boxes
     private void emptyTextBoxes() {
         nameField.setText("");
         calField.setText("");
         
     }
     
+    // disables the buttons    
+    // Add, Delete, Update
     private void disableButtons() {
         btnAdd.setEnabled(false);
         btnDelete.setEnabled(false);
         btnUpdate.setEnabled(false);
     }
     
+    // enables the buttons
+    // Add, Delete, Update
     private void enableButtons() {
         btnAdd.setEnabled(true);
         btnDelete.setEnabled(true);
         btnUpdate.setEnabled(true);
     }
     
-    
+    // builds the table with daily records
     public DefaultTableModel buildTable(ResultSet rs)  {
-        
+        // column names
         Vector<String> columnNames = new Vector<String>();
         
         columnNames.add("Name");
         columnNames.add("Cal");
         
-        
+        // records to fill in
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
         
         try {
             ResultSetMetaData metaData = rs.getMetaData();
             int columns = metaData.getColumnCount();
-
-            /*
-            // get names of columns
-            for (int i = 1; i <= columns; i++) {
-                columnNames.add(metaData.getColumnName(i));
-            }
-            */
 
             // get data for the table
             while (rs.next()) {
@@ -403,41 +423,7 @@ public class EditSport extends javax.swing.JDialog {
 
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditSport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new EditFood().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnAdd;

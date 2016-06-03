@@ -51,6 +51,7 @@ public class PieChart {
         
     }
     
+    // draw chart and decorate
     private void initialise() {
         // data for the chart
         chartData = new DefaultPieDataset();
@@ -71,7 +72,6 @@ public class PieChart {
         plot.setInteriorGap(0.01);
         plot.setOutlineVisible(false);
         plot.setBackgroundPaint(null);
-        //plot.setForegroundAlpha(0.8f);
         
         plot.setSectionPaint(0, new Color(135, 198, 197));
         plot.setSectionPaint(1, new Color(177, 192, 41));
@@ -91,8 +91,6 @@ public class PieChart {
         panel.setVisible(true);
         panel.setSize(195, 195);
         
-        //panel.setBackground(Color.white);
-        //chart.setBackgroundPaint(new Color(0,0,0,0));
     }
     
 }

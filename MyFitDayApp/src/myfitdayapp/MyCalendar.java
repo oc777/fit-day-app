@@ -1,4 +1,5 @@
 /*
+ * modified version of the tutorial presented on dreamincode.net
  * http://www.dreamincode.net/forums/topic/25042-creating-a-calendar-viewer-application/
  */
 package myfitdayapp;
@@ -47,7 +48,6 @@ public class MyCalendar extends javax.swing.JDialog {
         setLayout(null);
 	setLookAndFeel();
 	createControls();
-	//setBorder();
 	registerActionListeners();
 	addControls();
 	setBounds();
@@ -138,8 +138,6 @@ public class MyCalendar extends javax.swing.JDialog {
     }
 
     private void setBounds() {
-	//pane.setBounds(0, 0, 320, 335);
-	//lblMonth.setBounds(85 - lblMonth.getPreferredSize().width / 2, 25, 100, 25);
         lblMonth.setBounds(60, 25, 85, 25);
         cmbYear.setBounds(205, 25, 90, 20);
 	btnPrev.setBounds(10, 25, 50, 25);
@@ -212,8 +210,7 @@ public class MyCalendar extends javax.swing.JDialog {
         if (month == 0 && year <= realYear-10){btnPrev.setEnabled(false);} //Too early
         if (month == 11 && year >= realYear+100){btnNext.setEnabled(false);} //Too late
         lblMonth.setText(months[month]); //Refresh the month label (at the top)
-        //lblMonth.setBounds(160-lblMonth.getPreferredSize().width/2, 25, 180, 25); //Re-align label with calendar
-        lblMonth.setBounds(60, 25, 85, 25);
+        lblMonth.setBounds(60, 25, 85, 25);  //Re-align label with calendar
         cmbYear.setSelectedItem(String.valueOf(year)); //Select the correct year in the combo box
 
         //Clear table
@@ -261,7 +258,6 @@ public class MyCalendar extends javax.swing.JDialog {
                 setBackground(new Color(175,230,230));
                 int mm = currentMonth+1;
                 date = value.toString()+"."+mm+"."+currentYear;
-                //System.out.println(date);
             }
             setBorder(null);
             setForeground(Color.black);
@@ -282,6 +278,7 @@ public class MyCalendar extends javax.swing.JDialog {
                 refreshCalendar(currentMonth, currentYear);
         }
     }
+    
     static class btnNext_Action implements ActionListener{
         public void actionPerformed (ActionEvent e){
                 if (currentMonth == 11){ //Foward one year

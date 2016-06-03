@@ -10,7 +10,8 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 /**
- * class for creating the pie chart representation date specific macros
+ * class for creating the pie chart representation of date specific macros
+ * (fat, carbs, protein)
  * 
  * @author olgachristensen
  */
@@ -28,15 +29,14 @@ public class PieChartCals {
     // constructor for empty chart 
     public PieChartCals() {
         // default values for chart
-        food = 50;
-        sport = 50;
+        food = 70;
+        sport = 30;
         
         
         initialise();
         
         plot.setSectionPaint(0, Color.gray);
         plot.setSectionPaint(1, Color.lightGray);
-        //plot.setSectionPaint(2, Color.white);
            
     }
     
@@ -50,6 +50,7 @@ public class PieChartCals {
         
     }
     
+    // draw chart and decorate
     private void initialise() {
         // data for the chart
         chartData = new DefaultPieDataset();
@@ -69,7 +70,6 @@ public class PieChartCals {
         plot.setInteriorGap(0.01);
         plot.setOutlineVisible(false);
         plot.setBackgroundPaint(null);
-        //plot.setForegroundAlpha(0.8f);
         
         plot.setSectionPaint(0, new Color(177, 192, 41));
         plot.setSectionPaint(1, new Color(222, 0, 33));
@@ -78,7 +78,6 @@ public class PieChartCals {
         plot.setShadowYOffset(0);
         
         plot.setLabelGenerator(null);
-        //plot.setSimpleLabels(true);
     
         
         panel = new ChartPanel(chart);
@@ -88,8 +87,6 @@ public class PieChartCals {
         panel.setVisible(true);
         panel.setSize(195, 195);
         
-        //panel.setBackground(Color.white);
-        //chart.setBackgroundPaint(new Color(0,0,0,0));
     }
     
     

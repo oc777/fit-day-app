@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  * @author olgachristensen
  */
 public class DBHandler {
+    
     private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     private static final String URL = "jdbc:derby:appdb;create=true";
     public Connection connection;
@@ -56,7 +57,7 @@ public class DBHandler {
             // single entrie per date
             connection.createStatement().execute("create table totals (date date, goal int, food int, sport int, fat int, carbs int, protein int)");
             
-            // list of foods
+            // list of foods - NOT USED AT THE MOMENT
             connection.createStatement().execute("create table foodlist (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), name varchar(20), cal int, fat int, carbs int, protein int)");    
         
         } catch (SQLException ex) {
@@ -64,7 +65,7 @@ public class DBHandler {
         }
     }
     
-    // is invoked when a consumption entry is made
+    // EditFood - add new record
     // stores entry in food table
     // updates totals
     // updates macros
@@ -84,7 +85,7 @@ public class DBHandler {
         
     }
     
-    // is invoked when an activity entry is made
+    // EditSport - add new record
     // stores entry in sport table
     public void insertDataSport(String date, String name, int cal) {
         try {
@@ -144,11 +145,9 @@ public class DBHandler {
             Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = st.executeQuery("select * from totals"); 
 
-            if (rs.last()) {
+            if (rs.last()) 
                 goal = rs.getInt("goal");
-                
-
-            }
+             
         
         } catch (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,6 +157,7 @@ public class DBHandler {
     }
     
     // checks if any entry for the date was made in totals
+    // returns true if minimum one entry exists 
     public boolean checkTotals(String date) {
         boolean entries = false;
         
@@ -176,6 +176,7 @@ public class DBHandler {
     }
     
     // checks if any entry for the date was made in food
+    // returns true if minimum one entry exists 
     public boolean checkFood(String date) {
         boolean entries = false;
         
@@ -194,6 +195,7 @@ public class DBHandler {
     }
     
     // checks if any entry for the date was made in sport
+    // returns true if minimum one entry exists 
     public boolean checkSport(String date) {
         boolean entries = false;
         
@@ -212,7 +214,8 @@ public class DBHandler {
     }
     
     
-    // calculates totals for food
+    // calculates totals for food (for the whole day)
+    // updates totals table
     public void updateTotalsFood(String date) {
         try {
             Statement st = connection.createStatement();
@@ -245,7 +248,8 @@ public class DBHandler {
     }
     
     
-    // calculates totals for sport
+    // calculates totals for sport (for the whole day)
+    // updates totals table
     public void updateTotalsSport(String date) {
         
         try{
@@ -273,7 +277,7 @@ public class DBHandler {
         
     }
     
-    // returns macros for the date in form of strings array
+    // returns macros for the date in form of array of strings
     public String[] getMacros(String date) {
         String[] res = new String[3];
         
@@ -291,9 +295,7 @@ public class DBHandler {
         } catch (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //System.out.println(Arrays.toString(res));
-        
+                
         return res;
     }
     
@@ -313,9 +315,7 @@ public class DBHandler {
         } catch (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //System.out.println("Total food " + res);
-        
+                
         return res;
     }
     
@@ -335,9 +335,7 @@ public class DBHandler {
         } catch (SQLException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //System.out.println("Total sport " + res);
-        
+                
         return res;
     }
     
@@ -371,7 +369,7 @@ public class DBHandler {
             
             int i = 0;
             while(rs.next()) {
-                
+                // find the row to update
                 if (i == index) {
                     rs.updateString("name", data[0]);
                     rs.updateInt("cal", cal);
@@ -380,7 +378,6 @@ public class DBHandler {
                     rs.updateInt("protein", p);
                     
                     rs.updateRow();
-                    //System.out.println("updated row");
                     
                     break;
                 }
@@ -403,14 +400,12 @@ public class DBHandler {
         try {
             Statement st = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = st.executeQuery("select * from food where date='" + date + "'");
-            // select name, cal, fat, carbs, protein ???
             
             int i = 0;
             while(rs.next()) {
-                
+                // find the row to delete
                 if (i == index) {
                     rs.deleteRow();
-                    //System.out.println("deleted row");
                     
                     break;
                 }
@@ -453,7 +448,7 @@ public class DBHandler {
             
             int i = 0;
             while(rs.next()) {
-                
+                // find the row to update
                 if (i == index) {
                     rs.updateString("name", data[0]);
                     rs.updateInt("cal", cal);
@@ -466,17 +461,11 @@ public class DBHandler {
             }
             
             updateTotalsSport(date);
-            
-            //macros = getMacros(date);
-        
+                    
         } catch (SQLException e) {
             System.out.println("Update DB fail: " + e);
         } 
-        /*
-        catch (NumberFormatException ex) {
-            System.out.println("Int parser err: " + ex);
-        }
-        */
+        
         
     }
     
@@ -489,7 +478,7 @@ public class DBHandler {
             
             int i = 0;
             while(rs.next()) {
-                
+                // find row to delete
                 if (i == index) {
                     rs.deleteRow();
                     System.out.println("deleted row");
@@ -500,9 +489,7 @@ public class DBHandler {
             }
             
             updateTotalsSport(date);
-            
-            //macros = getMacros(date);
-            
+                        
             
         } catch (SQLException e) {
             System.out.println("updateSportDelete fail " + e);
@@ -527,114 +514,9 @@ public class DBHandler {
     }
     
     
-    // prints everything from food table
-    public void printAllFood() {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from food");
-            while(rs.next())
-                System.out.println("Date: " + rs.getString("date") + "Name: " + rs.getString("name") + ", cal: " 
-                        + rs.getString("cal") + ", fat: " + rs.getString("fat") + ", carbs: "
-                        + rs.getString("carbs") + ", protein: " + rs.getString("protein"));
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-    }
-    
-    // prints everything from sport table
-    public void printAllSport() {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from sport");
-            while(rs.next())
-                System.out.println("Date: " + rs.getString("date") + "Name: " + rs.getString("name") + ", cal: " 
-                        + rs.getString("cal"));
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }
-    
-    // prints everything from totals table
-    public void printAllTotals() {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals");
-            while(rs.next())
-                System.out.println("TOTALS Date: " + rs.getString("date") + " Goal: " + rs.getString("goal") + " Food: " +
-                        rs.getString("food") + " Sport: " + rs.getString("sport") + " F: " + rs.getString("fat") + 
-                        " C: " + rs.getString("carbs") + " P: " + rs.getString("protein"));
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }
-    
-    // returns a string of all food entries for the date
-    // name + calories
-    public String getTodayFood(String date) {
-        
-        String str = "";
-        
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from food where date='" + date + "'");
-
-
-            while(rs.next()) {
-                // testing
-                //System.out.println("");
-                //System.out.format("%20s", rs.getString(2) + " | ");
-                //System.out.format("%5s", rs.getString(3) + " | ");
-
-                str += rs.getString(2);
-                str += ".....";
-                str += rs.getString(3);
-                str += "\n";
-                }
-        } catch  (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-        return str;
-    }
-    
-    // returns a string of all sport entries for the date
-    // name + calories
-    public String getTodaySport(String date) {
-        
-        String str = "";
-        
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from sport where date='" + date + "'");
-
-
-            while(rs.next()) {
-                // testing
-                //System.out.println("");
-                //System.out.format("%20s", rs.getString(2) + " | ");
-                //System.out.format("%5s", rs.getString(3) + " | ");
-
-                str += rs.getString(2);
-                str += ".....";
-                str += rs.getString(3);
-                str += "\n";
-
-
-            }
-        } catch  (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-        return str;
-    }
-    
-    // Statistics - calculate macros ovaer a period
+    // Statistics - calculate macros for a specific period
     public int[] getMacrosStats(String startDate, String endDate) {
-        int[] macrosStats = new int[3];
+        int[] macrosStats = new int[3];     // fat, carbs, protein
         int fat = 0;
         int carbs = 0;
         int p = 0;
@@ -643,6 +525,7 @@ public class DBHandler {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
             
+            // calculate total macros
             while (rs.next()) {
                 if (rs.getString("fat") != null)
                     fat += Integer.parseInt(rs.getString("fat"));
@@ -656,6 +539,7 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        // fill the array with data
         macrosStats[0] = fat;
         macrosStats[1] = carbs;
         macrosStats[2] = p;
@@ -663,9 +547,9 @@ public class DBHandler {
         return macrosStats;
     }
     
-    // Statistics - calculate calorie ovaer a period
+    // Statistics - calculate calorie for a specific period
     public int[] getCaloriesStats(String startDate, String endDate) {
-        int[] calStats = new int[2];
+        int[] calStats = new int[2];    // fod, sport
         int food = 0;
         int sport = 0;
         
@@ -673,6 +557,7 @@ public class DBHandler {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
             
+            // calculate total consumption and activities
             while (rs.next()) {
                 if (rs.getString("food") != null)
                     food += Integer.parseInt(rs.getString("food"));
@@ -684,14 +569,16 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        // fill the array with data
         calStats[0] = food;
         calStats[1] = sport;
         
         return calStats;
     }
 
+    // BarChart - get list of dates available in the specific period
     public String[] getDatesChart(String startDate, String endDate) {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         
         
         try {
@@ -708,23 +595,22 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        // copy data from List to Array
         String[] dates = list.toArray(new String[list.size()]);
         
         return dates;
     }
     
+    // BarChart - get list of goals available in the specific period
     public int[] getGoalChart(String startDate, String endDate) {
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
         
         try {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
             
             while(rs.next()) {
-                //if (rs.getString("goal") == null)
-                    //list.add(0);
-                //else
-                    list.add(rs.getInt("goal"));
+                list.add(rs.getInt("goal"));
             }
         
         }
@@ -734,27 +620,26 @@ public class DBHandler {
         
         
         int[] goal = new int[list.size()];
+        // copy data from List to Array
         for (int i = 0; i < goal.length; i++)
             goal[i] = list.get(i);
         
         return goal;
     }
     
+    // BarChart - get list of total cals available in the specific period
     public int[] getTotalChart (String startDate, String endDate) {
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
         
         try {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
         
             while(rs.next()) {
-                //if (rs.getString("total") == null)
-                    //list.add(0);
-                //else
                 int f = rs.getInt("food");
                 int s = rs.getInt("sport");
-                int t = f - s;
-                    list.add(t);
+                int t = f - s;      // total calories = consumed - burned
+                list.add(t);
             }
         
         }
@@ -764,6 +649,7 @@ public class DBHandler {
         
         
         int[] total = new int[list.size()];
+        // copy data from List to Array
         for (int i = 0; i < total.length; i++)
             total[i] = list.get(i);
         
@@ -771,77 +657,3 @@ public class DBHandler {
     }
     
 }
-
-/*
-// updates totals when new food entry is made (food added)
-    public void updateTotalsFoodAdd(String date, int cal, int f, int c, int p) {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
-            
-            if (rs.next()) {
-            
-                // if it is the first entry for the date
-                if (rs.getString("food") == null)
-                    //st.execute("insert into totals (date, food, fat, carbs, protein) values('"+date+"',"+cal+","+f+","+c+","+p+")");
-                    st.execute("update totals set food="+cal+",fat="+f+",carbs="+c+",protein="+p 
-                            +" where date='" + date + "'");
-
-                // update existing entry
-                else {
-                    int calories = Integer.parseInt(rs.getString("food")) + cal;
-                    int fat = Integer.parseInt(rs.getString("fat")) + f;
-                    int carbs = Integer.parseInt(rs.getString("carbs")) + c;
-                    int protein = Integer.parseInt(rs.getString("protein")) + p;
-
-                    st.execute("update totals set food="+calories+",fat="+fat+",carbs="+carbs+",protein="+protein 
-                            +" where date='" + date + "'");
-
-                }
-            }
-        
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
-    // updates totals when a food entry is removed
-    public void updateTotalsFoodDelete (String date, int cal, int f, int c, int p) {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date='" + date + "'");
-            
-            if (rs.next()) {
-            
-                
-                int calories = Integer.parseInt(rs.getString("food")) - cal;
-                int fat = Integer.parseInt(rs.getString("fat")) - f;
-                int carbs = Integer.parseInt(rs.getString("carbs")) - c;
-                int protein = Integer.parseInt(rs.getString("protein")) - p;
-
-                st.execute("update totals set food="+calories+",fat="+fat+",carbs="+carbs+",protein="+protein 
-                            +" where date='" + date + "'");
-
-                
-            }
-        
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    // prints alldate specific entries from food table
-    public void printTodayFood(String date) {
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from food where date=" + date);
-            while(rs.next())
-                System.out.println("Name: " + rs.getString("name") + ", cal: " 
-                        + rs.getString("cal"));
-        } catch (SQLException ex) {
-            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-*/

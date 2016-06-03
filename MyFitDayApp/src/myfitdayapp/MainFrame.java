@@ -10,22 +10,27 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 
 
 /**
- *
+ * Main window of the APP
+ * User can:
+ * - change date of the overview
+ * - see the total goal / consumption / burn for the day
+ * - view total macros for the day in pie chart form
+ * 
+ * Controls available:
+ * - change date
+ * - show statistics
+ * - edit meals
+ * - edit sport
+ * 
  * @author olgachristensen
  */
 public class MainFrame extends javax.swing.JFrame {
 
     private DBHandler dbh;
-    private String food;
-    private String sport;
     private int goal;
     private int total; 
     private PieChart pChart;
@@ -36,10 +41,9 @@ public class MainFrame extends javax.swing.JFrame {
     private int width1;
     private int width2;
     
-    
+    // Constructor
     public MainFrame() {
         dbh = new DBHandler();
-        //today = getDate();
         today = dbh.getDate();
         macros = dbh.getMacros(today);
         // width of status bar
@@ -48,9 +52,9 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setBackground(new Color(51, 51, 51));
         initComponents();
         
+        // add nodes
         addChart();
         setDate();
-        //updatePanels();
         setGoal();
         setTakenCalories(today);
         setSpentCalories(today);
@@ -489,7 +493,8 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-    // draw the chart
+    // draw the pie chart 
+    // macros: fats, carbs, protein
     private void addChart() {
         // no food entered today -> empty chart
         if (!dbh.checkFood(today)) {
@@ -511,7 +516,7 @@ public class MainFrame extends javax.swing.JFrame {
         
     }
     
-    // redraw chart with new data
+    // redraw macros chart with new data
     private void updateChart() {
         chart.removeAll();
         chart.revalidate();
@@ -538,32 +543,15 @@ public class MainFrame extends javax.swing.JFrame {
     
     // set value for date lable
     private void setDate(){
-        //resDate.setText(getDate());
         resDate.setText(today);
     }
     
-    
-    // get todays date
-    public String getDate() {
-        Calendar calendar = new GregorianCalendar();
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        
-        String date = "";
-        //date += day +"."+(month+1)+"."+ year;
-        date += year + "-" + (month+1) + "-" + day;
-        
-        
-        return date;
-        
-    }
-    
-    
     // get the status bar
+    // shows graphically total (meals - sport) vs goal
     private void drawStatusBar(Graphics g) {
         Graphics2D box = (Graphics2D) g;
         
+        // goal hasn't been reached
         if (goal - total > 0) {
             
             getWidthPositive();
@@ -573,12 +561,11 @@ public class MainFrame extends javax.swing.JFrame {
             box.fillRect(0, 0, width1, 40);
             
             // light grey
-            //box.setColor(new Color(212, 212, 212));
             box.setColor(Color.GRAY);
             box.fillRect(width1, 0, width2, 40);
             
             
-            
+        // goal was exceeded     
         } else {
             
             getWidthNegative();
@@ -611,7 +598,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     // CLICKED set goal
     private void btnSetGoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetGoalActionPerformed
-        SetGoal sg = new SetGoal(this, true);
+        SetGoal sg = new SetGoal(this, true, today);
         sg.setLocationRelativeTo(this);
         sg.setVisible(true);
         
@@ -619,11 +606,8 @@ public class MainFrame extends javax.swing.JFrame {
         sg.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                //goal = sg.goal();
-                //resGoal.setText("" + goal);
                 setGoal();
                 setMarginCalories();
-                //dbh.printAllTotals(); 
                 statusPanel.repaint();
             }
         });
@@ -632,10 +616,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     // choose date
     private void btnDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateActionPerformed
-        /*
-        ChooseDate cd = new ChooseDate(today, this, true);
-        
-        */
         
         MyCalendar cd = new MyCalendar(this, true);
         
@@ -648,12 +628,11 @@ public class MainFrame extends javax.swing.JFrame {
             public void windowClosed(WindowEvent e) {
                 if (cd.date != null)
                     today = cd.date;
-                System.out.println(today);
+                
                 macros = dbh.getMacros(today);
+                
                 setDate();
                 updateChart();
-                
-                //updatePanels();
                 setGoal();
                 setTakenCalories(today);
                 setSpentCalories(today);
@@ -678,8 +657,6 @@ public class MainFrame extends javax.swing.JFrame {
         ef.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                food = dbh.getTodayFood(today);
-                //textFood.setText(food);
                 macros = dbh.getMacros(today);
                     
                 updateChart();
@@ -704,9 +681,6 @@ public class MainFrame extends javax.swing.JFrame {
         es.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                sport = dbh.getTodaySport(today);
-                //textSport.setText(sport);
-                    
                 setSpentCalories(today);
                 setTotalCalories();
                 setMarginCalories();
@@ -720,8 +694,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnStatsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatsActionPerformed
         Statistics.getObj(today).setVisible(true);
         
-        //stats.setLocationRelativeTo(null);
-        //stats.setVisible(true);
     }//GEN-LAST:event_btnStatsActionPerformed
 
     // set total consumed calories counter
@@ -742,14 +714,12 @@ public class MainFrame extends javax.swing.JFrame {
     
     // set total calories counter
     private void setTotalCalories() {
-        //if (dbh.checkSport(today)) {
-            int foodCal = Integer.parseInt(resConsumed.getText());
-            int sportCal = Integer.parseInt(resSpent.getText());
-            total = foodCal - sportCal;
+        int foodCal = Integer.parseInt(resConsumed.getText());
+        int sportCal = Integer.parseInt(resSpent.getText());
+        total = foodCal - sportCal;
 
-            resTotal.setText("" + total);
-        //} else
-        //    resTotal.setText("0");
+        resTotal.setText("" + total);
+        
     }
     
     // set margin counter 
@@ -762,42 +732,7 @@ public class MainFrame extends javax.swing.JFrame {
         resMargin.setText("" + margin);
     }
     
-    //REMOVE main ???
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new MainFrame().setVisible(true);
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDate;
@@ -831,22 +766,3 @@ public class MainFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 }
 
-
-    /*
-    // update food and sport text fields
-    private void updatePanels() {
-        if (dbh.checkFood(today)) {
-            food = dbh.getTodayFood(today);
-            textFood.setText(food);
-        }
-        else
-            textFood.setText("");
-        
-        if (dbh.checkSport(today)) {
-            sport = dbh.getTodaySport(today);
-            textSport.setText(sport);
-        }
-        else
-            textSport.setText("");
-    }
-    */

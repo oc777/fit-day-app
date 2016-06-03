@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package myfitdayapp;
 
 import java.awt.Color;
@@ -19,7 +15,13 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Dialog window for handling records of food consumption for one day
+ * User can 
+ * - view the records (in table form)
+ * - edit existing records
+ * - delete existing records
+ * - add new records
+ * 
  * @author olgachristensen
  */
 public class EditFood extends javax.swing.JDialog {
@@ -32,6 +34,7 @@ public class EditFood extends javax.swing.JDialog {
     public int err;
     
     /**
+     * Constructor
      * Creates new form EditFood
      */
     public EditFood(String d, JFrame parent, boolean modal) {
@@ -42,6 +45,7 @@ public class EditFood extends javax.swing.JDialog {
         date = d;
         selectedRow = 0;
         
+        // remove close / minimize controls
         setUndecorated(true);
         initComponents();
         showDateLable.setText(d);
@@ -277,18 +281,24 @@ public class EditFood extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // clicked CLOSE
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
+    // clicked DELETE
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-
+        // show confirmation dialog
         int q = JOptionPane.showConfirmDialog(this, "Delete chosen record?", 
                 "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         
+        // if deletion confirmed
         if (q == 0) {
+            // remove record from the table
             dtm.removeRow(selectedRow);
+            // update DB
             dbh.updateFoodDelete(date, selectedRow);
+            
             emptyTextBoxes();
             removeBorder();
             disableButtons();
@@ -296,13 +306,16 @@ public class EditFood extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    // a row in the table was clicked
     private void foodTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTableMouseClicked
         
         enableButtons();
         removeBorder();
         
+        // get index of selected row
         selectedRow = foodTable.getSelectedRow();
-        //System.out.println(selectedRow);
+
+        // fill the text boxes accordingly 
         
         String n = foodTable.getModel().getValueAt(selectedRow, 0).toString();
         nameField.setText(n);
@@ -321,15 +334,17 @@ public class EditFood extends javax.swing.JDialog {
             
     }//GEN-LAST:event_foodTableMouseClicked
 
+    // clicked UPDATE
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        
+        // prepare red border for text boxes with incompatible input
         Border border = BorderFactory.createLineBorder(Color.RED, 1);
         removeBorder();
         
         
         try {
+            // check if Name field is not empty
             if (nameField.getText().length() != 0 ) {
-        
+                // update table
                 foodTable.setValueAt(nameField.getText(), selectedRow, 0);
                 foodTable.setValueAt(calField.getText(), selectedRow, 1);
                 foodTable.setValueAt(fatField.getText(), selectedRow, 2);
@@ -337,8 +352,8 @@ public class EditFood extends javax.swing.JDialog {
                 foodTable.setValueAt(proteinField.getText(), selectedRow, 4);
 
                 String[] data = {nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText()};
-                //updateDB(nameField.getText(), calField.getText(), fatField.getText(), carbField.getText(), proteinField.getText());
 
+                // update DB
                 dbh.updateFoodEdit(date, selectedRow, data);
 
                 emptyTextBoxes();
@@ -349,7 +364,7 @@ public class EditFood extends javax.swing.JDialog {
         
         }
         catch (NumberFormatException e) {
-            
+            // put red border on text fields with bad input
             try {
                 int cal = Integer.parseInt(calField.getText());
             } catch (NumberFormatException ex) {
@@ -378,6 +393,7 @@ public class EditFood extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    // enables ADD button when something is typed in the name field
     private void nameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameFieldKeyTyped
         btnAdd.setEnabled(true);
         
@@ -386,14 +402,16 @@ public class EditFood extends javax.swing.JDialog {
             evt.consume();
     }//GEN-LAST:event_nameFieldKeyTyped
 
+    // clicked ADD
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // prepare red border for text boxes with incompatible input
         Border border = BorderFactory.createLineBorder(Color.RED, 1);
         removeBorder();
         
         try {
+            // check if Name field is not empty
             if (nameField.getText().length() != 0) {
                 Vector<Object> data = new Vector<Object>();
-                
                 
                 int cal = Integer.parseInt(calField.getText());
                 int fat = Integer.parseInt(fatField.getText());
@@ -406,13 +424,13 @@ public class EditFood extends javax.swing.JDialog {
                 data.add(carb);
                 data.add(p);
 
+                // update table
                 dtm.addRow(data);
+                // insert record in DB
                 dbh.insertDataFood(dbh.getDate(), nameField.getText(), cal, fat, carb, p);
 
                 emptyTextBoxes();
-
                 disableButtons();
-                //super.dispose();
             }
             else {
                 nameField.setBorder(border);
@@ -420,7 +438,7 @@ public class EditFood extends javax.swing.JDialog {
             }
         
         } catch (NumberFormatException e) {
-            //errorMsg.setText("Only integers");
+            //handle bad input
             
             try {
                 int cal = Integer.parseInt(calField.getText());
@@ -450,7 +468,7 @@ public class EditFood extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnAddActionPerformed
 
-    
+    // empties the text boxes
     private void emptyTextBoxes() {
         nameField.setText("");
         calField.setText("");
@@ -459,6 +477,7 @@ public class EditFood extends javax.swing.JDialog {
         proteinField.setText("");
     }
     
+    // removes red border from text fields (if any)
     private void removeBorder() {
         nameField.setBorder(null);
         calField.setBorder(null);
@@ -467,20 +486,25 @@ public class EditFood extends javax.swing.JDialog {
         proteinField.setBorder(null);
     }
     
+    // disables the buttons    
+    // Add, Delete, Update
     private void disableButtons() {
         btnAdd.setEnabled(false);
         btnDelete.setEnabled(false);
         btnUpdate.setEnabled(false);
     }
     
+    // enables the buttons    
+    // Add, Delete, Update
     private void enableButtons() {
         btnAdd.setEnabled(true);
         btnDelete.setEnabled(true);
         btnUpdate.setEnabled(true);
     }
     
+    // builds the table with daily records
     public DefaultTableModel buildTable(ResultSet rs)  {
-        
+        // column names
         Vector<String> columnNames = new Vector<String>();
         
         columnNames.add("Name");
@@ -489,18 +513,12 @@ public class EditFood extends javax.swing.JDialog {
         columnNames.add("C");
         columnNames.add("P");
         
+        // records to fill in
         Vector<Vector<Object>> data = new Vector<Vector<Object>>();
         
         try {
             ResultSetMetaData metaData = rs.getMetaData();
             int columns = metaData.getColumnCount();
-
-            /*
-            // get names of columns
-            for (int i = 1; i <= columns; i++) {
-                columnNames.add(metaData.getColumnName(i));
-            }
-            */
 
             // get data for the table
             while (rs.next()) {
@@ -520,40 +538,7 @@ public class EditFood extends javax.swing.JDialog {
 
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditFood.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new EditFood().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
