@@ -716,8 +716,12 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_editSportActionPerformed
 
+    // show statistics
     private void btnStatsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatsActionPerformed
-        // TODO add your handling code here:
+        Statistics.getObj(today).setVisible(true);
+        
+        //stats.setLocationRelativeTo(null);
+        //stats.setVisible(true);
     }//GEN-LAST:event_btnStatsActionPerformed
 
     // set total consumed calories counter

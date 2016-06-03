@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -690,6 +690,85 @@ public class DBHandler {
         return calStats;
     }
 
+    public String[] getDatesChart(String startDate, String endDate) {
+        ArrayList<String> list = new ArrayList<String>();
+        
+        
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+            
+            while(rs.next()) {
+                list.add(rs.getString("date"));
+            }
+            
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String[] dates = list.toArray(new String[list.size()]);
+        
+        return dates;
+    }
+    
+    public int[] getGoalChart(String startDate, String endDate) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+            
+            while(rs.next()) {
+                //if (rs.getString("goal") == null)
+                    //list.add(0);
+                //else
+                    list.add(rs.getInt("goal"));
+            }
+        
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        int[] goal = new int[list.size()];
+        for (int i = 0; i < goal.length; i++)
+            goal[i] = list.get(i);
+        
+        return goal;
+    }
+    
+    public int[] getTotalChart (String startDate, String endDate) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+        
+            while(rs.next()) {
+                //if (rs.getString("total") == null)
+                    //list.add(0);
+                //else
+                int f = rs.getInt("food");
+                int s = rs.getInt("sport");
+                int t = f - s;
+                    list.add(t);
+            }
+        
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        int[] total = new int[list.size()];
+        for (int i = 0; i < total.length; i++)
+            total[i] = list.get(i);
+        
+        return total;
+    }
     
 }
 

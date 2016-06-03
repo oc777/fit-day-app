@@ -17,7 +17,7 @@ import org.jfree.data.general.DefaultPieDataset;
 public class PieChart {
     
     public ChartPanel panel;
-    public JFreeChart chart;
+    private JFreeChart chart;
     private PiePlot plot;
     private DefaultPieDataset chartData;
     
