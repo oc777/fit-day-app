@@ -577,7 +577,7 @@ public class DBHandler {
     }
 
     // BarChart - get list of dates available in the specific period
-    public String[] getDatesChart(String startDate, String endDate) {
+    public ArrayList<String> getDatesChart(String startDate, String endDate) {
         ArrayList<String> list = new ArrayList<>();
         
         
@@ -596,13 +596,13 @@ public class DBHandler {
         }
         
         // copy data from List to Array
-        String[] dates = list.toArray(new String[list.size()]);
+        //String[] dates = list.toArray(new String[list.size()]);
         
-        return dates;
+        return list;
     }
     
     // BarChart - get list of goals available in the specific period
-    public int[] getGoalChart(String startDate, String endDate) {
+    public ArrayList<Integer> getGoalChart(String startDate, String endDate) {
         ArrayList<Integer> list = new ArrayList<>();
         
         try {
@@ -618,17 +618,18 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
+        /*
         int[] goal = new int[list.size()];
         // copy data from List to Array
         for (int i = 0; i < goal.length; i++)
             goal[i] = list.get(i);
+        */
         
-        return goal;
+        return list;
     }
     
     // BarChart - get list of total cals available in the specific period
-    public int[] getTotalChart (String startDate, String endDate) {
+    public ArrayList<Integer> getTotalChart (String startDate, String endDate) {
         ArrayList<Integer> list = new ArrayList<>();
         
         try {
@@ -647,13 +648,13 @@ public class DBHandler {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
+        /*
         int[] total = new int[list.size()];
         // copy data from List to Array
         for (int i = 0; i < total.length; i++)
             total[i] = list.get(i);
-        
-        return total;
+        */
+        return list;
     }
     
 }

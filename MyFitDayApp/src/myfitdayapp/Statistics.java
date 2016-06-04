@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -29,7 +30,7 @@ public class Statistics extends javax.swing.JFrame {
     private boolean totalsEmpty;
     private PieChart chartMacros;
     private PieChartCals chartCals;
-    private BarChart chartTotals;
+    private BarChart1 chartTotals;
     
     private static Statistics obj = null;
     
@@ -56,7 +57,7 @@ public class Statistics extends javax.swing.JFrame {
         lblEndDate.setText(endDate);
         setStartDate(-1); // -1 = back in time
         
-        getTotals();
+        //getTotals();
         addChartMacros();
         addChartCalories();
         addChart();
@@ -164,24 +165,37 @@ public class Statistics extends javax.swing.JFrame {
     
     // get data for BarChart for selcted period
     private void getTotals() {
-        dates = dbh.getDatesChart(startDate, endDate);
-        goal = dbh.getGoalChart(startDate, endDate);
-        total = dbh.getTotalChart(startDate, endDate);
+        ArrayList<String> d = dbh.getDatesChart(startDate, endDate);
+        ArrayList<Integer> g = dbh.getGoalChart(startDate, endDate);
+        ArrayList<Integer> t = dbh.getTotalChart(startDate, endDate);
         
-        checkTotals();
+        trim(d, g, t);
+        
     }
     
-    // check if any meals or sports are registered during selected period
-    private void checkTotals() {
-        totalsEmpty = true;
-        
-        for (int i = 0; i < total.length; i++) {
-            if (total[i] != 0) {
-                totalsEmpty = false;
-                break;
+    private void trim(ArrayList<String> d, ArrayList<Integer> g, ArrayList<Integer> t) {
+        // remove zero records
+        for (int i = 0; i < t.size(); i++) {
+            if (t.get(i) == 0) {
+                t.remove(i);
+                g.remove(i);
+                d.remove(i);
+                i--;
             }
         }
-            
+        
+        // ArrayList to Array
+        
+        dates = d.toArray(new String[d.size()]);
+        
+        goal = new int[g.size()];
+        for (int i = 0; i < goal.length; i++)
+            goal[i] = g.get(i);
+        
+        total = new int[t.size()];
+        for (int i = 0; i < total.length; i++)
+            total[i] = t.get(i);
+           
     }
     
     // draw the pie chart for Macros
@@ -239,10 +253,10 @@ public class Statistics extends javax.swing.JFrame {
         getTotals();
         
         // nothing registered during selected period
-        if (totalsEmpty || total.length == 0)
-            chartTotals = new BarChart();
+        if (total.length == 0)
+            chartTotals = new BarChart1();
         else
-            chartTotals = new BarChart(dates, goal, total);
+            chartTotals = new BarChart1(dates, goal, total);
         
         pnlChart.add(chartTotals.panel);
         pnlChart.validate();
