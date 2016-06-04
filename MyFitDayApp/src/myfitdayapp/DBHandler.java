@@ -481,7 +481,6 @@ public class DBHandler {
                 // find row to delete
                 if (i == index) {
                     rs.deleteRow();
-                    System.out.println("deleted row");
                     
                     break;
                 }
