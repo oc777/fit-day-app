@@ -427,7 +427,7 @@ public class EditFood extends javax.swing.JDialog {
                 // update table
                 dtm.addRow(data);
                 // insert record in DB
-                dbh.insertDataFood(dbh.getDate(), nameField.getText(), cal, fat, carb, p);
+                dbh.insertDataFood(date, nameField.getText(), cal, fat, carb, p);
 
                 emptyTextBoxes();
                 disableButtons();

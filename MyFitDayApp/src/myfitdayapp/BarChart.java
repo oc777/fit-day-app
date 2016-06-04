@@ -41,7 +41,7 @@ public class BarChart {
     
     // constructor for empty chart (no data available)
     public BarChart() {
-        date = new String[]{"yyyy-mm-dd"};
+        date = new String[]{"dd.mm.yyyy"};
         goal = new int[] {1500};
         total = new int[] {1000};
         

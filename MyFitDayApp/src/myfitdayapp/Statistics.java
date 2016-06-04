@@ -27,7 +27,6 @@ public class Statistics extends javax.swing.JFrame {
     private String[] dates;
     private int[] goal;
     private int[] total;
-    private boolean totalsEmpty;
     private PieChart chartMacros;
     private PieChartCals chartCals;
     private BarChart chartTotals;
@@ -35,7 +34,7 @@ public class Statistics extends javax.swing.JFrame {
     private static Statistics obj = null;
     
     // constructor 
-    // instance is invoked from other classes with getObj() static method
+    // instance is created from other classes with getObj() static method
     private Statistics(String today) {
         dbh = new DBHandler();
         endDate = today;
@@ -47,9 +46,6 @@ public class Statistics extends javax.swing.JFrame {
         macros = new int[3];
         calories = new int[2];
         
-        totalsEmpty = true;
-        
-        
         getContentPane().setBackground(new Color(51, 51, 51));
         initComponents();
         
@@ -57,7 +53,6 @@ public class Statistics extends javax.swing.JFrame {
         lblEndDate.setText(endDate);
         setStartDate(-1); // -1 = back in time
         
-        //getTotals();
         addChartMacros();
         addChartCalories();
         addChart();

@@ -351,7 +351,7 @@ public class EditSport extends javax.swing.JDialog {
                 // update table
                 dtm.addRow(data);
                 // insert record in DB
-                dbh.insertDataSport(dbh.getDate(), nameField.getText(), cal);
+                dbh.insertDataSport(date, nameField.getText(), cal);
 
                 emptyTextBoxes();
                 disableButtons();
