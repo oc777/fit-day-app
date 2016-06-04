@@ -30,7 +30,7 @@ public class Statistics extends javax.swing.JFrame {
     private boolean totalsEmpty;
     private PieChart chartMacros;
     private PieChartCals chartCals;
-    private BarChart1 chartTotals;
+    private BarChart chartTotals;
     
     private static Statistics obj = null;
     
@@ -254,9 +254,9 @@ public class Statistics extends javax.swing.JFrame {
         
         // nothing registered during selected period
         if (total.length == 0)
-            chartTotals = new BarChart1();
+            chartTotals = new BarChart();
         else
-            chartTotals = new BarChart1(dates, goal, total);
+            chartTotals = new BarChart(dates, goal, total);
         
         pnlChart.add(chartTotals.panel);
         pnlChart.validate();
@@ -292,7 +292,6 @@ public class Statistics extends javax.swing.JFrame {
         txtCarbs = new javax.swing.JLabel();
         txtProtein = new javax.swing.JLabel();
         pnlFat1 = new javax.swing.JPanel();
-        pnlCarbs1 = new javax.swing.JPanel();
         lblFood1 = new javax.swing.JLabel();
         lblFood2 = new javax.swing.JLabel();
         pnlSport = new javax.swing.JPanel();
@@ -301,6 +300,7 @@ public class Statistics extends javax.swing.JFrame {
         txtFood = new javax.swing.JLabel();
         lblFood = new javax.swing.JLabel();
         pnlFood = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -486,20 +486,6 @@ public class Statistics extends javax.swing.JFrame {
             .addGap(0, 23, Short.MAX_VALUE)
         );
 
-        pnlCarbs1.setBackground(new java.awt.Color(220, 220, 125));
-        pnlCarbs1.setPreferredSize(new java.awt.Dimension(23, 23));
-
-        javax.swing.GroupLayout pnlCarbs1Layout = new javax.swing.GroupLayout(pnlCarbs1);
-        pnlCarbs1.setLayout(pnlCarbs1Layout);
-        pnlCarbs1Layout.setHorizontalGroup(
-            pnlCarbs1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 23, Short.MAX_VALUE)
-        );
-        pnlCarbs1Layout.setVerticalGroup(
-            pnlCarbs1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 23, Short.MAX_VALUE)
-        );
-
         lblFood1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         lblFood1.setForeground(new java.awt.Color(255, 255, 255));
         lblFood1.setText("Goal, calories");
@@ -557,6 +543,12 @@ public class Statistics extends javax.swing.JFrame {
             .addGap(0, 23, Short.MAX_VALUE)
         );
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/line.png"))); // NOI18N
+        jLabel2.setText(" ");
+        jLabel2.setMaximumSize(new java.awt.Dimension(23, 23));
+        jLabel2.setMinimumSize(new java.awt.Dimension(23, 23));
+        jLabel2.setPreferredSize(new java.awt.Dimension(23, 23));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -572,10 +564,10 @@ public class Statistics extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlCarbs1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblFood1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlSport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -636,15 +628,16 @@ public class Statistics extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMonth)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnNext, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPrev)))
+                        .addComponent(btnPrev))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnMonth)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(43, 43, 43)
@@ -695,9 +688,10 @@ public class Statistics extends javax.swing.JFrame {
                         .addGap(137, 137, 137)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(pnlFat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFood2)
-                    .addComponent(lblFood1)
-                    .addComponent(pnlCarbs1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblFood2)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFood1)))
                 .addGap(18, 18, 18)
                 .addComponent(pnlChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
@@ -762,6 +756,7 @@ public class Statistics extends javax.swing.JFrame {
     private javax.swing.JButton btnPrev;
     private javax.swing.JButton btnWeek;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblCarbs;
     private javax.swing.JLabel lblEndDate;
     private javax.swing.JLabel lblFat;
@@ -772,7 +767,6 @@ public class Statistics extends javax.swing.JFrame {
     private javax.swing.JLabel lblSport1;
     private javax.swing.JLabel lblStartDate;
     private javax.swing.JPanel pnlCarbs;
-    private javax.swing.JPanel pnlCarbs1;
     private javax.swing.JPanel pnlChart;
     private javax.swing.JPanel pnlChartCals;
     private javax.swing.JPanel pnlChartMacros;
