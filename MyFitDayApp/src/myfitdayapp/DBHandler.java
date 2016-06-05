@@ -1,6 +1,7 @@
 package myfitdayapp;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,10 +37,19 @@ public class DBHandler {
             if (connection != null)
                 System.out.println("connected");
             
+            DatabaseMetaData dmd = connection.getMetaData();
+            
+            ResultSet rs = dmd.getTables(null, null, "food", null);
+            if (!rs.next()) 
+                createTable();
+            
+            
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(DBHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
+    
     
     
     // create number of tables in DB
