@@ -4,8 +4,6 @@ package myfitdayapp;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +19,7 @@ public class MyFitDayApp {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args)  throws SQLException {
+    public static void main(String[] args) {
         
         //dbh = new DBHandler();
         //deleteTodayData();

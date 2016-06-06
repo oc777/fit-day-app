@@ -39,7 +39,7 @@ public class DBHandler {
             
             DatabaseMetaData dmd = connection.getMetaData();
             
-            ResultSet rs = dmd.getTables(null, null, "food", null);
+            ResultSet rs = dmd.getTables(null, null, null, null);
             if (!rs.next()) 
                 createTable();
             
