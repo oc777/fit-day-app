@@ -39,8 +39,9 @@ public class DBHandler {
             
             DatabaseMetaData dmd = connection.getMetaData();
             
-            ResultSet rs = dmd.getTables(null, null, null, null);
+            ResultSet rs = dmd.getTables(null, null, "FOOD", null);
             if (!rs.next()) 
+                
                 createTable();
             
             
@@ -592,7 +593,7 @@ public class DBHandler {
         
         try {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"' order by date");
             
             while(rs.next()) {
                 list.add(rs.getString("date"));
@@ -616,7 +617,7 @@ public class DBHandler {
         
         try {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"' order by date");
             
             while(rs.next()) {
                 list.add(rs.getInt("goal"));
@@ -643,7 +644,7 @@ public class DBHandler {
         
         try {
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"'");
+            ResultSet rs = st.executeQuery("select * from totals where date between '"+startDate+"' and '"+endDate+"' order by date");
         
             while(rs.next()) {
                 int f = rs.getInt("food");
